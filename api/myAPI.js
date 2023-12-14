@@ -1,10 +1,13 @@
 let express = require('express')
 let api = express.Router()
 
-api.use(function(req, res, next) {
-    console.log(req.method+" "+req.path+" - "+req.ip);
+app.get('/', (req, res, next) => {
+    let string = `${req.method} ${req.path} - ${req.ip}`
+    console.log(string) 
     next();
-});
+}, (req, res) => {
+    res.send('Hello Camp')
+})
 
 api.get("/api/:date", (req, res) => {
 
