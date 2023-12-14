@@ -12,7 +12,11 @@ api.get("/", (req, res) => {
 
 })
 
-api.get("/api/:date", (req, res) => {
+/*
+Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
+*/
+
+api.get("/api/:date?", (req, res) => {
     
     let dateReq, dateObj
 
