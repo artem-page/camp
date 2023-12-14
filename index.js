@@ -15,6 +15,14 @@ const https = require('https');
 var cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));
 
+app.get('/', (req, res, next) => {
+    let string = `${req.method} ${req.path} - ${req.ip}`
+    console.log(string) 
+    next();
+}, (req, res) => {
+    res.send('Hello Camp')
+})
+
 let sslServer = https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/camp.r1a1.xyz/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/camp.r1a1.xyz/cert.pem'),
