@@ -1,6 +1,6 @@
 'use strict';
 
-const myAPI = require('./api/myAPI');
+const api = require('./api/myAPI');
 
 const express = require('express');
 const app = express();
@@ -14,6 +14,8 @@ const https = require('https');
 
 var cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));
+
+app.use(api);
 
 app.get('/', (req, res, next) => {
     let string = `${req.method} ${req.path} - ${req.ip}`
