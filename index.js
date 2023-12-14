@@ -1,5 +1,7 @@
 'use strict';
 
+const myAPI = require('./api/myAPI');
+
 const express = require('express');
 const app = express();
 
@@ -12,8 +14,6 @@ const https = require('https');
 
 var cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));
-
-const myAPI = require('./api/myAPI');
 
 let sslServer = https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/camp.r1a1.xyz/privkey.pem'),

@@ -1,6 +1,11 @@
 let express = require('express')
 let app = express()
 
+app.use(function(req, res, next) {
+    console.log(req.method+" "+req.path+" - "+req.ip);
+    next();
+});
+
 app.get("/api/:date", (req, res) => {
 
     let dateReq = isNaN(req.params.date) ? req.params.date : parseInt(req.params.date)
