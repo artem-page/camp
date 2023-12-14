@@ -1,12 +1,12 @@
 let express = require('express')
-let app = express()
+let api = express.Router()
 
-app.use(function(req, res, next) {
+api.use(function(req, res, next) {
     console.log(req.method+" "+req.path+" - "+req.ip);
     next();
 });
 
-app.get("/api/:date", (req, res) => {
+api.get("/api/:date", (req, res) => {
 
     let dateReq = isNaN(req.params.date) ? req.params.date : parseInt(req.params.date)
     let dateObj = new Date(dateReq)
@@ -15,4 +15,4 @@ app.get("/api/:date", (req, res) => {
   
 })
 
-module.exports = app
+module.exports = api
