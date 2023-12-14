@@ -19,7 +19,7 @@ Parameters can be suffixed with a question mark ( ? ) to make the parameter opti
 api.get("/api/:date?", (req, res) => {
     
     let dateReq, dateObj
-    res.json(req.params)
+    res.json(req.params === "")
     /* 
     The input arrives in the form of a string. While the new Date() function adeptly transforms it into a date, 
     it encounters difficulty when the string resembles a numeric value or Unix timestamp. 
