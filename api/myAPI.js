@@ -25,7 +25,7 @@ api.get("/api/:date?", (req, res) => {
     it encounters difficulty when the string resembles a numeric value or Unix timestamp. 
     */
     
-    if(!req.params) {
+    if(!req.params || req.params.date === "") {
         dateObj = new Date()
         res.json({ unix: dateObj.getTime(), utc: dateObj.toUTCString() })
     } else {
