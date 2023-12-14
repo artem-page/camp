@@ -2,7 +2,7 @@
 
 const express = require('express');
 const app = express();
-
+const vhost = require('vhost');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require("body-parser");
