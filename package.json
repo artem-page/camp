@@ -1,0 +1,22 @@
+{
+	"name": "API",
+	"author": "R1A1",
+	"description": "An engaging project that provides me with the opportunity to explore and experiment with NodeJS backend development. This undertaking allows me to delve into the intricacies of NodeJS, honing my skills and gaining valuable hands-on experience in the realm of backend development.",
+	"keywords": [ "project", "experiment", "nodejs", "backend", "hands-on" ],
+	"license": "MIT",
+	"version": "1.0.0",
+	"dependencies": {
+		"body-parser": "^1.20.2",
+		"connect": "^3.7.0",
+		"cors": "^2.8.0",
+		"dotenv": "^16.3.0",
+		"express": "^4.18.1",
+		"mongoose": "^5.13.21",
+		"nodemon": "^3.0.2",
+		"vhost": "^3.0.2"
+	},
+	"main": "server.js",
+	"scripts": {
+		"start": "nodemon ./server.js"
+	}
+}
