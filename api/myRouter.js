@@ -46,8 +46,4 @@ apiRouter.get("/api/request-header-parser/whoami", (req, res) => {
 
 //
 
-apiRouter.post((req, res) => {
-    res.json({ original_url : req.body.original_url })
-})
-
 module.exports = apiRouter
