@@ -15,7 +15,7 @@ var cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));
 
 // Mounting static assets
-//app.use(express.static('assets'));
+app.use( '/assets', express.static(__dirname + '/assets') )
 
 // Sending index page to the root path
 app.get('/', function (req, res) {
