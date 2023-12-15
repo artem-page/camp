@@ -47,7 +47,7 @@ api.get("/api/whoami", (req, res) => {
         An array available: host, connection, user-agent, cache-control, accept, accept-encoding, accept-language, etc.
     */
 
-    res.json({ host: clientHeaders["host"], language: clientHeaders["accept-language"], software: clientHeaders["user-agent"]})
+    res.json({ clientHeaders })
 })
 
 module.exports = api
