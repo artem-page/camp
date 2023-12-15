@@ -48,17 +48,8 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
-let linkSchema = new mongoose.Schema({
-    original_url: {type: String, required: true}
-})
-
-let Link = mongoose.model('Link', linkSchema)
-
-let newLink = new Link
-
 apiRouter.post('/api/shorturl', (req, res) => {
-    newLink = req.body.original_url
-    res.json({ original_url: newLink, short_url: ''})
+    res.json({ original_url: req.body.original_url, short_url: ''})
 })
 
 module.exports = apiRouter
