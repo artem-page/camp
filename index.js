@@ -39,7 +39,7 @@ app.use(vhost("camp.r1a1.xyz", app))
 
 const { port } = require('./config')
 
-const listener = sslServer.listen(port, function () {
+const listener = sslServer.listen(port, function (err) {
     if (err) console.log(err)
     console.log("Node.js listening on port " + listener.address().port)
 })
