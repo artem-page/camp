@@ -3,10 +3,11 @@ let apiRouter = express.Router()
 
 // Middleware that is specific to this router
 
-apiRouter.use(function(req, res) {
+apiRouter.use(function(req, res, next) {
     let currDate = new Date()
     console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() )
-});
+    next()
+})
 
 // timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
