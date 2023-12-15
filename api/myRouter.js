@@ -29,11 +29,17 @@ apiRouter.get("/api/timestamp-microservice/:date?", (req, res) => {
 
 // request-header-parser
 
-apiRouter.get("/api/request-header-parser/whoami", (req, res) => {
+apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
     let clientHeaders = req.headers
     let clientIP = req.socket.remoteAddress.replace(/^.*:/, "")  // removing ::ffff:
 
     res.json({ ipaddress: clientIP, language: clientHeaders["accept-language"], software: clientHeaders["user-agent"] })
+})
+
+// shorturl-microservice
+
+apiRouter.post('/api/shorturl', (req, res) => {
+    res.send('POST request to the homepage')
 })
 
 module.exports = apiRouter
