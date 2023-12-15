@@ -1,14 +1,14 @@
 let express = require('express')
 let api = express.Router()
-let bodyParser = require("body-parser");
+let bodyParser = require("body-parser")
 
-api.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
-api.use(bodyParser.json());
+api.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
+api.use(bodyParser.json())
 
 api.use(function(req, res, next) {
-    let currDate = new Date();
+    let currDate = new Date()
     console.log( req.method+" "+req.path+" - "+req.ip+ " " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() );
-    next();
+    next()
 });
 
 /*
@@ -47,12 +47,10 @@ api.get("/api/request-header-parser/whoami", (req, res) => {
 })
 
 
-api.route('/api/shorturl').get((req, res, next) => {
+api.route('/api/shorturl').get((req, res) => {
     res.json({ original_url: req.query.original_url }) // Same as shorturl?original-url=
-    next()
 }).post((req, res) => {
     res.json({ original_url: req.body.original_url })
-    next()
 })
 
 module.exports = api
