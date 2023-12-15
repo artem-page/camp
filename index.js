@@ -21,14 +21,15 @@ app.use(cors())
 // Mounting static assets
 //app.use( '/assets', express.static(__dirname + '/public') )
 
-// Middleware
-app.use(api)
-
 // With middleware
-app.use('/', function (req, res) {
+app.use('/', function (req, res, next) {
   //res.send('Hello Camp')
   res.sendFile(__dirname + "/views/index.html")
+  next()
 })
+
+// Middleware
+app.use(api)
 
 let sslServer = https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/camp.r1a1.xyz/privkey.pem'),
