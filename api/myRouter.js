@@ -38,8 +38,8 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
-apiRouter.post('/api/shorturl', (req, res) => {
-    res.send('POST request to the homepage')
+apiRouter.get('/api/shorturl', (req, res) => {
+    res.send('GET request to the homepage')
 })
 
 module.exports = apiRouter
