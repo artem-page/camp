@@ -44,4 +44,12 @@ apiRouter.get("/api/request-header-parser/whoami", (req, res) => {
     res.json({ ipaddress: clientIP, language: clientHeaders["accept-language"], software: clientHeaders["user-agent"] })
 })
 
+//
+
+apiRouter.route("/api/shorturl").get((req, res) => {
+    res.json({ original_url : req.query.original_url })
+}).post((req, res) => {
+    res.json({ original_url : req.body.original_url })
+})
+
 module.exports = apiRouter
