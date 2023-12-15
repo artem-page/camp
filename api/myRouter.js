@@ -1,6 +1,10 @@
 let express = require("express")
 let apiRouter = express()
 
+let mongoose = require('mongoose')
+const { mongoURI } = require('./config')
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+
 // bodyParser
 
 let bodyParser = require('body-parser')
@@ -44,8 +48,17 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
+let linkSchema = new mongoose.Schema({
+    original_url: {type: String, required: true}
+})
+
+let Link = mongoose.model('Link', linkSchema)
+
+let newLink = new Link
+
 apiRouter.post('/api/shorturl', (req, res) => {
-    res.json({ original_url : req.body.original_url, short_url : 1})
+    newLink = req.body.original_url
+    res.json({ original_url: newLink, short_url: ''})
 })
 
 module.exports = apiRouter
