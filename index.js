@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false })); // When using extended=fals
 app.use(bodyParser.json());
 */
 // Mounting static assets
-app.use( '/assets', express.static(__dirname + '/assets') )
+//app.use( '/assets', express.static(__dirname + '/assets') )
 
 // Sending index page to the root path
 app.get('/', function (req, res) {
