@@ -3,12 +3,10 @@ let app = express()
 
 app.use(function(req, res) {
     let currDate = new Date()
-    console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() );
+    console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() )
 });
 
-/*
-Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
-*/
+// Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
 app.get("/api/timestamp-microservice/:date?", (req, res) => {
     
