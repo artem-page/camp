@@ -13,12 +13,12 @@ const https = require('https');
 
 var cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));
-/*
+
 app.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
 app.use(bodyParser.json());
-*/
+
 // Mounting static assets
-app.use(express.static('assets'));
+//app.use(express.static('assets'));
 
 // Sending index page to the root path
 app.get('/', function (req, res) {
