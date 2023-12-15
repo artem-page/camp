@@ -2,7 +2,7 @@ let express = require('express')
 let api = express.Router()
 
 api.use(function(req, res, next) {
-    console.log(req.method+" "+req.path+" - "+req.ip);
+    console.log(req.method+" "+req.path+" - "+req.ip+ " " + Date.now());
     next();
 });
 
@@ -41,14 +41,12 @@ api.get("/api/request-header-parser/whoami", (req, res) => {
     res.json({ ipaddress: clientIP, language: clientHeaders["accept-language"], software: clientHeaders["user-agent"] })
 })
 
-let bodyParser = require('body-parser')
-api.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
-api.use(bodyParser.json());
-
-api.route('/api/shorturl').get((req, res) => {
+api.route('/api/shorturl').get((req, res, next) => {
     res.json({ original_url: req.query.original_url }) // Same as shorturl?original-url=
+    next()
 }).post((req, res) => {
     res.json({ original_url: req.body.original_url })
+    next()
 })
 
 module.exports = api
