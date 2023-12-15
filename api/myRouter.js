@@ -61,6 +61,8 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
 // list mongobd collections
 
+
+
 apiRouter.get('/api/collections/:collection?', async (req, res) => {
 
     if(!req.params.collection) {
@@ -83,7 +85,18 @@ apiRouter.get('/api/collections/:collection?', async (req, res) => {
         }
     } else {
 
-        res.json({ collection: req.params.collection })
+        try {
+
+            let collectionContent = await mongoose.connection.db.collection(req.params.collection).find().toArray()
+
+            res.json({ collection: collectionContent})
+
+        } catch (error) {
+
+            console.error('Error fetching links:', error)
+
+            res.status(500).json({ error: 'Internal Server Error' })
+        }
 
     }
 
