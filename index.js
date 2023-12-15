@@ -14,10 +14,10 @@ const https = require('https');
 var cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));
 
-/* Mounting body-parser */
+/* Mounting body-parser 
 app.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
 app.use(bodyParser.json());
-
+*/
 // Mounting static assets
 app.use( '/assets', express.static(__dirname + '/assets') )
 

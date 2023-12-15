@@ -3,12 +3,12 @@ let api = express()
 
 /*
 Mounting body-parser
-*/
+
 
 let bodyParser = require("body-parser")
 api.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
 api.use(bodyParser.json())
-
+*/
 // Info for pm2 monit
 
 api.use(function(req, res) {
