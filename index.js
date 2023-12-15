@@ -17,12 +17,8 @@ app.use(cors());
 
 //app.use('/public', express.static(`${process.cwd()}/public`));
 
-app.get("/", function(req, res, next) {
+app.get("/", (req, res) {
   res.sendFile(process.cwd() + "/views/index.html")
-  next()
-}, (req, res) => {
-  let currDate = new Date()
-  console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() )
 })
 
 // Middleware
