@@ -1,11 +1,11 @@
 let express = require('express')
 let api = express()
-/*
+
 api.use(function(req, res) {
     let currDate = new Date()
     console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() )
 });
-*/
+
 // Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
 api.get("/api/timestamp-microservice/:date?", (req, res) => {
