@@ -19,10 +19,10 @@ app.use(cors());
 //app.use(bodyParser.json());
 
 // Mounting static assets
-app.use( '/assets', express.static(__dirname + '/public') )
+//app.use( '/assets', express.static(__dirname + '/public') )
 
 // Sending index page to the root path
-app.get('/', function (req, res) {
+app.get('/', function (req, res, next) {
   //res.send('Hello Camp')
   res.sendFile(__dirname + '/views/index.html');
 });
