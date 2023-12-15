@@ -12,17 +12,14 @@ const cors = require('cors')
 const myRouter = require('./api/myRouter')
 
 const app = express()
-app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 204
 
-// Mount static assets
+app.use(cors());
 
-app.use("/public", express.static(path.join(__dirname, "public")))
+app.use('/public', express.static(`${process.cwd()}/public`));
 
-// Define the home page route
-
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/views/index.html")
-})
+app.get('/', function(req, res) {
+  res.sendFile(process.cwd() + '/views/index.html');
+});
 
 // Middleware
 
