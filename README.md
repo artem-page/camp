@@ -14,7 +14,7 @@ In this GitHub project, you can discover the following things:
 
 2. **Implementation of a request-header-parser microservice project engineered with NodeJS and ExpressJS:**
 
-    * In response to GET request (/api/whoami) the server returns your ip address, language and software.
+    * In response to GET request (/api/request-header-parser/whoami) the server returns your ip address, language and software.
 
-    * At the time of documenting this content, the microservice demonstrated operational efficacy at the URL https://camp.r1a1.xyz:8043/api/whoami
+    * At the time of documenting this content, the microservice demonstrated operational efficacy at the URL https://camp.r1a1.xyz:8043/api/request-header-parser/whoami
 

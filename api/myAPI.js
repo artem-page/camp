@@ -40,7 +40,7 @@ api.get("/api/timestamp-microservice/:date?", (req, res) => {
      
 })
 
-api.get("/api/whoami", (req, res) => {
+api.get("/api/request-header-parser/whoami", (req, res) => {
     let clientHeaders = req.headers
     let clientIP = req.socket.remoteAddress.replace(/^.*:/, "")  // removing ::ffff:
 
