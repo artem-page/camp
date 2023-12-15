@@ -12,11 +12,7 @@ const cors = require('cors')
 const myRouter = require('./api/myRouter')
 
 const app = express()
-app.use(cors())
-
-// Mount body-parser 
-app.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
-app.use(bodyParser.json());
+app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 204
 
 // Mount static assets
 
