@@ -1,14 +1,11 @@
 let express = require("express")
 let apiRouter = express()
 
-let mongoose = require('mongoose')
-const { mongoURI } = require('./config')
-
 // bodyParser
 
 let bodyParser = require('body-parser')
-apiRouter.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
-apiRouter.use(bodyParser.json());
+apiRouter.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
+apiRouter.use(bodyParser.json())
 
 // timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
