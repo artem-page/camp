@@ -61,24 +61,31 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
 // list mongobd collections
 
-apiRouter.get('/api/collections', async (req, res) => {
+apiRouter.get('/api/collections/:collection', async (req, res) => {
 
-    try {
-        // Get the list of collections
-        const collections = await mongoose.connection.db.listCollections().toArray();
+    if(!req.params.collection) {
+
+        try {
+            // Get the list of collections
+            const collections = await mongoose.connection.db.listCollections().toArray();
+            
+            // Extract collection names from the list
+            const collectionNames = collections.map(collection => collection.name);
         
-        // Extract collection names from the list
-        const collectionNames = collections.map(collection => collection.name);
-    
-        res.json({ collections: collectionNames })
+            res.json({ collections: collectionNames })
 
-      } catch (error) {
+        } catch (error) {
 
-        console.error('Error fetching collections:', error)
+            console.error('Error fetching collections:', error)
 
-        res.status(500).json({ error: 'Internal Server Error' })
+            res.status(500).json({ error: 'Internal Server Error' })
 
-      }
+        }
+    } else {
+
+        res.json({ collection: req.params.collection })
+
+    }
 
 })
 
