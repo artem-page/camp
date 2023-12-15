@@ -3,6 +3,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require("body-parser");
+
 const vhost = require('vhost');
 const http = require('http');
 const https = require('https');
@@ -12,7 +13,6 @@ const api = require('./api/myAPI');
 
 const app = express();
 app.use(cors());
-app.use(api);
 
 // Mounting body-parser 
 //app.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
@@ -23,9 +23,11 @@ app.use(api);
 
 // Sending index page to the root path
 app.get('/', function (req, res) {
-  //res.send('Hello Camp')
-  res.sendFile(__dirname + '/views/index.html');
+  res.send('Hello Camp')
+  //res.sendFile(__dirname + '/views/index.html');
 });
+
+app.use(api);
 
 let sslServer = https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/camp.r1a1.xyz/privkey.pem'),

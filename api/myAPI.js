@@ -1,14 +1,14 @@
 let express = require('express')
-let app = express()
-
-app.use(function(req, res) {
+let api = express()
+/*
+api.use(function(req, res) {
     let currDate = new Date()
     console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() )
 });
-
+*/
 // Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
-app.get("/api/timestamp-microservice/:date?", (req, res) => {
+api.get("/api/timestamp-microservice/:date?", (req, res) => {
     
     let dateReq, dateObj
 
@@ -32,11 +32,11 @@ app.get("/api/timestamp-microservice/:date?", (req, res) => {
      
 })
 
-app.get("/api/request-header-parser/whoami", (req, res) => {
+api.get("/api/request-header-parser/whoami", (req, res) => {
     let clientHeaders = req.headers
     let clientIP = req.socket.remoteAddress.replace(/^.*:/, "")  // removing ::ffff:
 
     res.json({ ipaddress: clientIP, language: clientHeaders["accept-language"], software: clientHeaders["user-agent"] })
 })
 
-module.exports = app
+module.exports = api
