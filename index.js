@@ -21,12 +21,13 @@ app.use(cors())
 // Mounting static assets
 //app.use( '/assets', express.static(__dirname + '/public') )
 
-// Sending index page to the root path
-app.get('/', function (req, res, next) {
+// With middleware
+app.use('/', function (req, res, next) {
   //res.send('Hello Camp')
   res.sendFile(__dirname + "/views/index.html")
 })
 
+// Middleware
 app.use(api)
 
 let sslServer = https.createServer({
