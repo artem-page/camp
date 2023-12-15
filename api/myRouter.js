@@ -58,10 +58,9 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 const Link = mongoose.model('link', {})
 
 apiRouter.post('/api/shorturl', (req, res) => {
-
-    let { link } = req.body
-    
-    let newLink = new Link({ link })
+   
+    let newLink = new Link
+    newLink.link = req.body.original_url
     await newLink.save()
 
     res.json({ original_url: req.body.original_url, short_url: ''})
