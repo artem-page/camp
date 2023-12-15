@@ -41,4 +41,8 @@ api.get("/api/request-header-parser/whoami", (req, res) => {
     res.json({ ipaddress: clientIP, language: clientHeaders["accept-language"], software: clientHeaders["user-agent"] })
 })
 
+api.post("/api/shorturl", (req, res) => {
+    res.json({ original_url : req.body.original_url, short_url : 1 })
+})
+
 module.exports = api
