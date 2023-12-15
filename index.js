@@ -21,13 +21,6 @@ app.use(cors())
 // Mounting static assets
 //app.use( '/assets', express.static(__dirname + '/public') )
 
-// With middleware
-app.get('/', function (req, res, next) {
-  //res.send('Hello Camp')
-  res.sendFile(__dirname + "/views/index.html")
-  next()
-})
-
 // Middleware
 app.use(api)
 

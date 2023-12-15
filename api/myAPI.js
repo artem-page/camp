@@ -6,6 +6,10 @@ api.use(function(req, res) {
     console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() )
 });
 
+api.get('/', function (req, res, next) {
+    res.sendFile(__dirname + "/views/index.html")
+})
+
 // Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
 api.get("/api/timestamp-microservice/:date?", (req, res) => {
