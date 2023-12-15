@@ -23,8 +23,8 @@ app.use(cors())
 
 // Sending index page to the root path
 app.get('/', function (req, res, next) {
-  //res.send('Hello Camp')
-  res.sendFile(path.join(__dirname + "/views/index.html"))
+  res.send('Hello Camp')
+  //res.sendFile(__dirname + "/views/index.html")
 })
 
 app.use(api)
