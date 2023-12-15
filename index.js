@@ -3,7 +3,6 @@ const express = require('express')
 const fs = require('fs')
 const path = require('path')
 
-const vhost = require('vhost')
 const http = require('http')
 const https = require('https')
 
@@ -32,8 +31,6 @@ let sslServer = https.createServer({
     cert: fs.readFileSync('/etc/letsencrypt/live/camp.r1a1.xyz/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/camp.r1a1.xyz/fullchain.pem')
 }, app)
-
-app.use(vhost("camp.r1a1.xyz", app))
 
 const { port } = require('./config')
 
