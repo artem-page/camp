@@ -14,13 +14,13 @@ const myRouter = require('./api/myRouter')
 const app = express()
 app.use(cors())
 
-// Mounting body-parser 
-//app.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
-//app.use(bodyParser.json());
+// Mount body-parser 
+app.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
+app.use(bodyParser.json());
 
-// Mounting static assets
+// Mount static assets
 
-app.use("/public", express.static(path.join(__dirname, "public")))
+app.use("/assets", express.static(path.join(__dirname, "public")))
 
 // Define the home page route
 
