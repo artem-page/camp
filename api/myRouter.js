@@ -1,5 +1,9 @@
 let express = require("express")
+let mongoose = require('mongoose')
 let apiRouter = express()
+
+const { mongoURI } = require(__dirname + '../config')
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // bodyParser
 
