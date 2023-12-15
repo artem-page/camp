@@ -19,9 +19,17 @@ app.use(cors())
 //app.use(bodyParser.json());
 
 // Mounting static assets
-app.use('/public', express.static(path.join(__dirname, 'public')))
+
+app.use("/public", express.static(path.join(__dirname, "public")))
+
+// Define the home page route
+
+apiRouter.get("/", (req, res) => {
+  res.sendFile(__dirname + "/views/index.html")
+})
 
 // Middleware
+
 app.use(myRouter)
 
 let sslServer = https.createServer({

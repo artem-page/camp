@@ -9,12 +9,6 @@ apiRouter.use(function(req, res, next) {
     next()
 });
 
-// Define the home page route
-
-apiRouter.get("/", (req, res) => {
-    res.sendFile(__dirname + "/views/index.html")
-})
-
 // timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
 apiRouter.get("/api/timestamp-microservice/:date?", (req, res) => {
