@@ -22,7 +22,7 @@ app.use(cors())
 //app.use( '/assets', express.static(__dirname + '/public') )
 
 // With middleware
-app.use('/', function (req, res, next) {
+app.get('/', function (req, res, next) {
   //res.send('Hello Camp')
   res.sendFile(__dirname + "/views/index.html")
   next()
