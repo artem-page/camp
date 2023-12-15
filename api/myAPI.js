@@ -6,12 +6,6 @@ api.use(function(req, res, next) {
     next();
 });
 
-api.get("/", (req, res) => {
-
-    res.send('Hello Camp')
-
-})
-
 /*
 Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 */

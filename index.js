@@ -13,9 +13,17 @@ const https = require('https');
 var cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));
 
+// Mounting static assets
+app.use(express.static('assets'));
+
+// Sending index page to the root path
+app.get('/', function (req, res) {
+  //res.send('Hello Camp')
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 const api = require('./api/myAPI');
 app.use(api);
-
 
 let sslServer = https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/camp.r1a1.xyz/privkey.pem'),
