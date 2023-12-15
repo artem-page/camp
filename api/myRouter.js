@@ -59,4 +59,27 @@ apiRouter.post('/api/shorturl', (req, res) => {
     res.json({ original_url: req.body.original_url, short_url: ''})
 })
 
+// list mongobd collections
+
+apiRouter.get('/api/collections', async (req, res) => {
+
+    try {
+        // Get the list of collections
+        const collections = await mongoose.connection.db.listCollections().toArray();
+        
+        // Extract collection names from the list
+        const collectionNames = collections.map(collection => collection.name);
+    
+        res.json({ collections: collectionNames })
+
+      } catch (error) {
+
+        console.error('Error fetching collections:', error)
+
+        res.status(500).json({ error: 'Internal Server Error' })
+
+      }
+
+})
+
 module.exports = apiRouter
