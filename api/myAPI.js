@@ -42,11 +42,7 @@ api.get("/api/timestamp-microservice/:date?", (req, res) => {
 
 api.get("/api/whoami", (req, res) => {
     let clientHeaders = req.headers
-    let clientIP = req.socket.remoteAddress
-
-    /*
-        An array available: host, connection, user-agent, cache-control, accept, accept-encoding, accept-language, etc.
-    */
+    let clientIP = req.socket.remoteAddress.replace(/^.*:/, "")  // removing ::ffff:
 
     res.json({ ipaddress: clientIP, language: clientHeaders["accept-language"], software: clientHeaders["user-agent"] })
 })
