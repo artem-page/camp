@@ -1,6 +1,16 @@
 let express = require('express')
 let api = express()
 
+/*
+Mounting body-parser
+*/
+
+const bodyParser = require("body-parser")
+api.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
+api.use(bodyParser.json())
+
+// Info for pm2 monit
+
 api.use(function(req, res) {
     let currDate = new Date()
     console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() );
