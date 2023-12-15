@@ -1,6 +1,12 @@
 let express = require("express")
 let apiRouter = express()
 
+// bodyParser
+
+let bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
+app.use(bodyParser.json());
+
 // timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
 apiRouter.get("/api/timestamp-microservice/:date?", (req, res) => {
@@ -39,7 +45,7 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 // shorturl-microservice
 
 apiRouter.post('/api/shorturl', (req, res) => {
-    res.json({ answer: "Ok" })
+    res.json({ original_url : req.body.original_url, short_url : 1})
 })
 
 module.exports = apiRouter
