@@ -1,17 +1,12 @@
 let express = require('express')
 let apiRouter = express.Router()
 
-let bodyparser = require("body-parser")
-
 // Middleware that is specific to this router
 
 apiRouter.use(function(req, res) {
     let currDate = new Date()
     console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() )
 });
-
-apiRouter.use(bodyparser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
-//apiRouter.use(bodyparser.json());
 
 // timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
