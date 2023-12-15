@@ -11,7 +11,7 @@ apiRouter.use(function(req, res) {
 });
 
 apiRouter.use(bodyparser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
-apiRouter.use(bodyparser.json());
+//apiRouter.use(bodyparser.json());
 
 // timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
