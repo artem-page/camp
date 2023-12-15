@@ -2,7 +2,6 @@
 const express = require('express')
 const fs = require('fs')
 const path = require('path')
-const bodyParser = require("body-parser")
 
 const vhost = require('vhost')
 const http = require('http')
@@ -13,13 +12,13 @@ const myRouter = require('./api/myRouter')
 
 const app = express()
 
-app.use(cors())
+app.use(cors());
 
-app.use("/public", express.static(__dirname + "/public"));
+app.use('/public', express.static(`${process.cwd()}/public`));
 
-app.get("/", function(req, res) {
-  res.sendFile(__dirname + "/views/index.html")
-})
+app.get('/', function(req, res) {
+  res.sendFile(process.cwd() + '/views/index.html');
+});
 
 // Middleware
 
