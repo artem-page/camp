@@ -38,7 +38,7 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
-apiRouter.get('/api/shorturl', (req, res) => {
+apiRouter.post('/api/shorturl', (req, res) => {
     res.json({ answer: "Ok" })
 })
 
