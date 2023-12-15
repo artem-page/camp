@@ -5,6 +5,13 @@ let apiRouter = express()
 const { mongoURI } = require(__dirname + '../config')
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
+// Check if the connection is successful
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+})
+
 // bodyParser 
 
 let bodyParser = require('body-parser')
