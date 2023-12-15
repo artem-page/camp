@@ -1,17 +1,7 @@
 let express = require('express')
-let api = express()
+let app = express()
 
-/*
-Mounting body-parser
-
-
-let bodyParser = require("body-parser")
-api.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
-api.use(bodyParser.json())
-*/
-// Info for pm2 monit
-
-api.use(function(req, res) {
+app.use(function(req, res) {
     let currDate = new Date()
     console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() );
 });
@@ -20,7 +10,7 @@ api.use(function(req, res) {
 Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 */
 
-api.get("/api/timestamp-microservice/:date?", (req, res) => {
+app.get("/api/timestamp-microservice/:date?", (req, res) => {
     
     let dateReq, dateObj
 
@@ -44,19 +34,11 @@ api.get("/api/timestamp-microservice/:date?", (req, res) => {
      
 })
 
-api.get("/api/request-header-parser/whoami", (req, res) => {
+app.get("/api/request-header-parser/whoami", (req, res) => {
     let clientHeaders = req.headers
     let clientIP = req.socket.remoteAddress.replace(/^.*:/, "")  // removing ::ffff:
 
     res.json({ ipaddress: clientIP, language: clientHeaders["accept-language"], software: clientHeaders["user-agent"] })
 })
 
-/*
-api.route("/api/shorturl").get((req, res) => {
-    res.json({ original_url: req.query.original_url })
-}).post((req, res) => {
-    res.json({ original_url: req.body.original_url })
-})
-*/
-
-module.exports = api
+module.exports = app
