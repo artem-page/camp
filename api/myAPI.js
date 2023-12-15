@@ -1,5 +1,6 @@
 let express = require('express')
-let api = express.Router()
+let api = express()
+
 let bodyParser = require("body-parser")
 
 api.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
