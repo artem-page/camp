@@ -7,7 +7,7 @@ api.use(bodyParser.json());
 
 api.use(function(req, res, next) {
     let currDate = Date.now();
-    console.log( req.method+" "+req.path+" - "+req.ip+ " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() );
+    console.log( req.method+" "+req.path+" - "+req.ip+ " " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() );
     next();
 });
 
