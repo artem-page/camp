@@ -56,4 +56,10 @@ api.post("/api/shorturl", (req, res) => {
     res.json({ original_url: req.body.original_url })
 })
 
+api.route("/api/shorturl").get((req, res) => {
+    res.json({ original_url: req.query.original_url })
+}).post((req, res) => {
+    res.json({ original_url: req.body.original_url })
+})
+
 module.exports = api
