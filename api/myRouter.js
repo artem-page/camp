@@ -1,5 +1,5 @@
-let express = require('express')
-let apiRouter = express.Router()
+let express = require("express")
+let apiRouter = express()
 
 // Middleware that is specific to this router
 
