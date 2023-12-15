@@ -1,11 +1,6 @@
 let express = require('express')
 let api = express()
 
-let bodyParser = require("body-parser")
-
-api.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
-api.use(bodyParser.json())
-
 api.use(function(req, res, next) {
     let currDate = new Date()
     console.log( req.method+" "+req.path+" - "+req.ip+ " " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() );
