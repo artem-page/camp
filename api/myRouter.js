@@ -61,7 +61,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
 // list mongobd collections
 
-apiRouter.get('/api/collections/:collection', async (req, res) => {
+apiRouter.get('/api/collections/:collection?', async (req, res) => {
 
     if(!req.params.collection) {
 
