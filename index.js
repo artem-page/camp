@@ -23,7 +23,14 @@ app.get('/', function(req, res) {
 
 // Middleware
 
+app.use(function(req, res) {
+  let currDate = new Date()
+  console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() )
+})
+
 app.use(myRouter)
+
+// Server
 
 let sslServer = https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/camp.r1a1.xyz/privkey.pem'),
