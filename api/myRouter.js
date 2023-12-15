@@ -4,8 +4,8 @@ let apiRouter = express()
 // bodyParser
 
 let bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
-app.use(bodyParser.json());
+apiRouter.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
+apiRouter.use(bodyParser.json());
 
 // timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
