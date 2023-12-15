@@ -17,16 +17,15 @@ app.use(cors());
 
 //app.use('/public', express.static(`${process.cwd()}/public`));
 
-app.get('/', function(req, res) {
+app.get("/", function(req, res, next) {
   res.sendFile(process.cwd() + "/views/index.html")
-})
-
-// Middleware
-
-app.use(function(req, res) {
+  next()
+}, (req, res) => {
   let currDate = new Date()
   console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() )
 })
+
+// Middleware
 
 app.use(myRouter)
 
