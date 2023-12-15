@@ -16,7 +16,7 @@ api.get("/", (req, res) => {
 Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 */
 
-api.get("/api/:date?", (req, res) => {
+api.get("/api/:date?", (req, res, next) => {
     
     let dateReq, dateObj
 
@@ -37,7 +37,14 @@ api.get("/api/:date?", (req, res) => {
             res.json({ unix: dateObj.getTime(), utc: dateObj.toUTCString() })
         }
     }
+
+    next()
      
+})
+
+api.get("/api/whoami", (req, res) => {
+    let clientHeaders = req.headers
+    res.json({clientHeaders})
 })
 
 module.exports = api
