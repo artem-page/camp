@@ -55,13 +55,23 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
+const linkSchema = new mongoose.Schema({
+    link: String
+})
+  
+const Link = mongoose.model('Link', linkSchema)
+
 apiRouter.post('/api/shorturl', (req, res) => {
-    res.json({ original_url: req.body.original_url, short_url: ''})
+
+    let { link } = req.body
+    
+    let newLink = new Link({ link })
+    await newLink.save()
+
+    res.json({ original_url: req.body.original_url, short_url: newLink})
 })
 
 // list mongobd collections
-
-
 
 apiRouter.get('/api/collections/:collection?', async (req, res) => {
 
