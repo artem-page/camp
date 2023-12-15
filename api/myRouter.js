@@ -1,18 +1,23 @@
 let express = require('express')
-let api = express()
+let apiRouter = express.Router()
 
-api.use(function(req, res) {
+// Middleware that is specific to this router
+
+apiRouter.use(function(req, res, next) {
     let currDate = new Date()
     console.log( req.method+" "+req.path+" - "+req.ip+ " " + " | " + currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds() )
+    next()
 });
 
-api.get('/', function (req, res, next) {
+// Define the home page route
+
+apiRouter.get("/", (req, res) => {
     res.sendFile(__dirname + "/views/index.html")
 })
 
-// Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
+// timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
-api.get("/api/timestamp-microservice/:date?", (req, res) => {
+apiRouter.get("/api/timestamp-microservice/:date?", (req, res) => {
     
     let dateReq, dateObj
 
@@ -36,11 +41,13 @@ api.get("/api/timestamp-microservice/:date?", (req, res) => {
      
 })
 
-api.get("/api/request-header-parser/whoami", (req, res) => {
+// request-header-parser
+
+apiRouter.get("/api/request-header-parser/whoami", (req, res) => {
     let clientHeaders = req.headers
     let clientIP = req.socket.remoteAddress.replace(/^.*:/, "")  // removing ::ffff:
 
     res.json({ ipaddress: clientIP, language: clientHeaders["accept-language"], software: clientHeaders["user-agent"] })
 })
 
-module.exports = api
+module.exports = apiRouter

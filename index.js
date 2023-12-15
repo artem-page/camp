@@ -9,7 +9,7 @@ const http = require('http')
 const https = require('https')
 
 const cors = require('cors')
-const api = require('./api/myAPI')
+const myRouter = require('./api/myRouter')
 
 const app = express()
 app.use(cors())
@@ -19,10 +19,10 @@ app.use(cors())
 //app.use(bodyParser.json());
 
 // Mounting static assets
-//app.use( '/assets', express.static(__dirname + '/public') )
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
 // Middleware
-app.use(api)
+app.use(myRouter)
 
 let sslServer = https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/camp.r1a1.xyz/privkey.pem'),
