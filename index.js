@@ -15,9 +15,6 @@ const app = express()
 
 app.use(cors());
 
-app.use(bodyParser.urlencoded({ extended: false })); // When using extended=false, values can be only strings or arrays
-app.use(bodyParser.json());
-
 app.use('/public', express.static(`${process.cwd()}/public`));
 
 app.get('/', function(req, res) {
