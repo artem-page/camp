@@ -24,7 +24,7 @@ app.use("/public", express.static(path.join(__dirname, "public")))
 
 // Define the home page route
 
-apiRouter.get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html")
 })
 
