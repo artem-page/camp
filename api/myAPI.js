@@ -41,7 +41,7 @@ api.get("/api/timestamp-microservice/:date?", (req, res) => {
 })
 
 api.get("/api/whoami", (req, res) => {
-    let clientHeaders = req.headers.clientHeaders
+    let clientHeaders = req.headers
 
     /*
         An array available: host, connection, user-agent, cache-control, accept, accept-encoding, accept-language, etc.
