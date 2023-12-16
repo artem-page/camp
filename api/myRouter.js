@@ -1,7 +1,9 @@
 require('dotenv').config()
+let dnsLookup = require('dns')
 let express = require("express")
 let mongoose = require('mongoose')
 let apiRouter = express()
+
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -58,6 +60,11 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 const Link = mongoose.model('link', {})
 
 apiRouter.post('/api/shorturl', (req, res) => {
+
+    let w3 = dns.lookup(req.body.original_url, function (err, addresses, family) {
+        console.log(addresses);
+    })
+    
     /*
     let newLink = new Link
     newLink.link = req.body.original_url
