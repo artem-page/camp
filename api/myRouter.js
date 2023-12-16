@@ -73,7 +73,7 @@ async function getIpAddress(originalUrl) {
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
-    let ipAddress = await getIpAddress(req.body.original_url)
+    let ipAddress = getIpAddress(req.body.original_url)
 
     /*
     let newLink = new Link
