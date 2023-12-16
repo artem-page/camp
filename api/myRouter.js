@@ -65,7 +65,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
       
         // Setting family as 6 i.e. IPv6 
         family: 6, 
-        hints: dns.ADDRCONFIG | dns.V4MAPPED, 
+        hints: dnsLookup.ADDRCONFIG | dnsLookup.V4MAPPED
     }
 
     let fcCamp = dnsLookup.lookup(req.body.original_url, options, function (err, addresses, family) {
