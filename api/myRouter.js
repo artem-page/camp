@@ -61,8 +61,9 @@ const Link = mongoose.model('link', {})
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
+    let ipAddress
     dns.lookup(req.body.original_url, (err, address, family) => {
-        console.log('address: %j family: IPv%s', address, family)
+        ipAddress = address
     })
 
     /*
@@ -70,7 +71,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
     newLink.link = req.body.original_url
     await newLink.save()
     */
-    //res.json({ original_url: req.body.original_url, short_url: fcCamp})
+    res.json({ original_url: req.body.original_url, short_url: ipAddress})
 })
 
 // list mongobd collections
