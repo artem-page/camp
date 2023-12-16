@@ -61,7 +61,14 @@ const Link = mongoose.model('link', {})
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
-    let fcCamp = dnsLookup.lookup(req.body.original_url, function (err, addresses, family) {
+    let options = { 
+      
+        // Setting family as 6 i.e. IPv6 
+        family: 6, 
+        hints: dns.ADDRCONFIG | dns.V4MAPPED, 
+    }
+
+    let fcCamp = dnsLookup.lookup(req.body.original_url, options, function (err, addresses, family) {
         return addresses
     })
 
