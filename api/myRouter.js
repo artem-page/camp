@@ -59,11 +59,21 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 const Link = mongoose.model('link', {})
 
+async function getIpAddress(originalUrl) {
+    return new Promise((resolve, reject) => {
+        dns.lookup(originalUrl, (err, address, family) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(address)
+            }
+        })
+    })
+}
+
 apiRouter.post('/api/shorturl', (req, res) => {
 
-    let ipAddress = dns.lookup(req.body.original_url, (err, address, family) => {
-        return address
-    })
+    let ipAddress = await getIpAddress(req.body.original_url)
 
     /*
     let newLink = new Link
