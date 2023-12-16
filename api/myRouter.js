@@ -1,5 +1,5 @@
 require('dotenv').config()
-let dnsLookup = require('dns')
+let dnsLookup = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
 let apiRouter = express()
