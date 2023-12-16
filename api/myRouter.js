@@ -61,7 +61,7 @@ const Link = mongoose.model('link', {})
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
-    let fcCamp = dns.lookup(req.body.original_url, function (err, addresses, family) {
+    let fcCamp = dnsLookup.lookup(req.body.original_url, function (err, addresses, family) {
         console.log(addresses)
     })
 
