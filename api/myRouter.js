@@ -62,9 +62,9 @@ const Link = mongoose.model('link', {})
 apiRouter.post('/api/shorturl', (req, res) => {
 
     let w3 = dns.lookup(req.body.original_url, function (err, addresses, family) {
-        console.log(addresses);
+        console.log(addresses)
     })
-    
+
     /*
     let newLink = new Link
     newLink.link = req.body.original_url
