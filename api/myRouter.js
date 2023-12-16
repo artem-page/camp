@@ -1,5 +1,5 @@
 require('dotenv').config()
-let dnsLookup = require('node:dns')
+let dns = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
 let apiRouter = express()
@@ -61,8 +61,8 @@ const Link = mongoose.model('link', {})
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
-    let fcCamp = dnsLookup.lookup(req.body.original_url, function (err, addresses, family) {
-        return addresses
+    dns.lookup(req.body.original_url, (err, address, family) => {
+        console.log('address: %j family: IPv%s', address, family)
     })
 
     /*
@@ -70,7 +70,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
     newLink.link = req.body.original_url
     await newLink.save()
     */
-    res.json({ original_url: req.body.original_url, short_url: fcCamp})
+    //res.json({ original_url: req.body.original_url, short_url: fcCamp})
 })
 
 // list mongobd collections
