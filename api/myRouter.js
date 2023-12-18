@@ -61,16 +61,6 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
-const linkSchema = new mongoose.Schema({
-    linkId: {type: Number, required: true, autoIncrement: true, initialValue: 1, step: 1},
-    link: {type: String, required: true }
-},
-{ versionKey: 'version' })
-
-linkSchema.plugin(mongooseAutoIncrementPlugin)
-
-let Link = mongoose.model('link', linkSchema)
-
 function isValidUrl(url) {
     const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/)?$/
     return urlPattern.test(url)
@@ -84,6 +74,15 @@ function removeProtocol(url) {
 apiRouter.post('/api/shorturl', (req, res) => {
 
     if (isValidUrl(req.body.original_url)) {
+
+        let linkSchema = new mongoose.Schema({
+            linkId: {type: Number, required: true, autoIncrement: true, initialValue: 1, step: 1},
+            link: {type: String, required: true }
+        })
+        
+        linkSchema.plugin(mongooseAutoIncrementPlugin)
+        
+        let Link = mongoose.model('link', linkSchema)
 
         let originalUrl = removeProtocol(req.body.original_url)
 
