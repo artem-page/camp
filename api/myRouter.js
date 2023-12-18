@@ -78,13 +78,12 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
         let originalUrl = removeProtocol(req.body.original_url)
 
-        //dns.lookup(originalUrl, (err, address) => {
-        /*
+        dns.lookup(originalUrl, (err, address) => {
+
             if (err) {
                 //console.error(err);
                 return res.json({ error: 'invalid url' })
             }
-        */
 
             let newRecord = new Link({
                 link: originalUrl
@@ -97,13 +96,10 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
             newRecord.save()
             .then(result => {
-
-                let shortUrlId = result; // Assuming 'result' contains the saved document
-                let numericId = parseInt( shortUrlId.id )
-
+                let shortUrl = result; // Assuming 'result' contains the saved document
                 // Now you can use 'shortUrl' as needed
                 //return done(null, shortUrl);
-                res.json({ original_url: originalUrl, short_url: numericId})
+                res.json({ original_url: originalUrl, short_url: shortUrl.id})
             })
             .catch(err => {
                 console.error(err);
@@ -112,7 +108,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
                 res.status(500).json({ error: 'Internal Server Error' })
             });
 
-        //})
+        })
 
     } else {
         return res.json({ error: 'invalid url' })
@@ -122,9 +118,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
 apiRouter.get('/api/shorturl/:id?', async (req, res) => {
 
-    let linkId = req.params.id
-    linkId = BigInt(`0x${linkId}`)
-    linkId = linkId.toString(16)
+    const linkId = req.params.id
 
     try {
 
