@@ -57,7 +57,7 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
-const Link = mongoose.model('link', {})
+const Link = mongoose.model('link', {link: {type: String, required: true}})
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
