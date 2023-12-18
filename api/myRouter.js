@@ -76,12 +76,14 @@ apiRouter.post('/api/shorturl', (req, res) => {
     .then(result => {
         let shortUrl = result; // Assuming 'result' contains the saved document
         // Now you can use 'shortUrl' as needed
-        return done(null, shortUrl);
+        //return done(null, shortUrl);
+        res.json({ original_url: originalUrl, short_url: shortUrl})
     })
     .catch(err => {
         console.error(err);
         // Handle the error appropriately
-        return done(err);
+        //return done(err);
+        res.status(500).json({ error: 'Internal Server Error' })
     });
 
 
@@ -89,7 +91,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
         return address
     })
 
-    res.json({ original_url: originalUrl, short_url: shortUrl})
+    
 })
 
 // list mongobd collections
