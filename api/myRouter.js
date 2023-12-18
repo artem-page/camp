@@ -2,6 +2,7 @@ require('dotenv').config()
 let dns = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
+let mongooseAutoIncrementPlugin = require("mongoose-auto-increment-plugin")
 let apiRouter = express()
 
 let cors = require('cors')
@@ -60,9 +61,7 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
-let mongooseAutoIncrementPlugin = require("mongoose-auto-increment-plugin")
-
-const linkSchema = Schema({
+const linkSchema = new mongoose.Schema({
     linkId: {type: Number, required: true, autoIncrement: true, initialValue: 1, step: 1},
     link: {type: String, required: true }
 },
@@ -70,7 +69,7 @@ const linkSchema = Schema({
 
 linkSchema.plugin(mongooseAutoIncrementPlugin)
 
-const Link = mongoose.model('link', linkSchema)
+let Link = mongoose.model('link', linkSchema)
 
 function isValidUrl(url) {
     const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/)?$/
