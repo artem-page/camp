@@ -2,7 +2,7 @@ require('dotenv').config()
 let dns = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
-let mongooseAutoIncrementPlugin = require("mongoose-auto-increment-plugin")
+
 let apiRouter = express()
 
 let cors = require('cors')
@@ -71,18 +71,32 @@ function removeProtocol(url) {
     return url.replace(/^https?:\/\//, '');
 }
 
+
+const linkSchema = new mongoose.Schema({
+    linkId: { type: Number, default: 0, unique: true },
+    link: { type: String, required: true }
+})
+
+let mongooseAutoIncrementPlugin = require("mongoose-auto-increment-plugin")
+
+linkSchema.plugin(mongooseAutoIncrementPlugin)
+
+const linkSchema = new mongoose.Schema({
+    linkId: {
+      type: Number,
+      autoIncrement: true,
+      initialValue: 0,
+      step: 1
+    },
+})
+
+let Link = mongoose.model('link', linkSchema)
+
+
+
 apiRouter.post('/api/shorturl', (req, res) => {
 
     if (isValidUrl(req.body.original_url)) {
-
-        let linkSchema = new mongoose.Schema({
-            linkId: { type: Number, required: true },
-            link: { type: String, required: true }
-        })
-        
-        linkSchema.plugin(mongooseAutoIncrementPlugin)
-        
-        let Link = mongoose.model('link', linkSchema)
 
         let originalUrl = removeProtocol(req.body.original_url)
 
