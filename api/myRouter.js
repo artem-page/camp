@@ -99,7 +99,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
             .then(result => {
 
                 let shortUrlId = result; // Assuming 'result' contains the saved document
-                let numericId = parseInt( shortUrlId.id.toString() )
+                let numericId = parseInt( shortUrlId.id )
 
                 // Now you can use 'shortUrl' as needed
                 //return done(null, shortUrl);
@@ -122,7 +122,9 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
 apiRouter.get('/api/shorturl/:id?', async (req, res) => {
 
-    const linkId = req.params.id.toString(16)
+    let linkId = req.params.id
+    linkId = BigInt(`0x${linkId}`)
+    linkId = linkId.toString(16)
 
     try {
 
