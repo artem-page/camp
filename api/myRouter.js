@@ -59,6 +59,11 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 const Link = mongoose.model('link', {link: String})
 
+function isValidUrl(url) {
+    const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/)?$/
+    return urlPattern.test(url)
+}
+
 function removeProtocol(url) {
     // Use a regular expression to remove "http://" or "https://"
     return url.replace(/^https?:\/\//, '');
@@ -66,21 +71,16 @@ function removeProtocol(url) {
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
-    let originalUrl = removeProtocol(req.body.original_url)
+    if (isValidUrl(req.body.original_url)) {
 
-    // Perform DNS lookup
-    dns.lookup(originalUrl, (err, address) => {
+        let originalUrl = removeProtocol(req.body.original_url)
 
-        if (err) {
-            //console.error(err);
-            return res.json({ error: 'invalid url' })
-        }
+        dns.lookup(originalUrl, (err, address) => {
 
-        if ( originalUrl == "freeCodeCamp.org" ) {
-
-            res.json({ original_url : 'https://freeCodeCamp.org', short_url : 1})
-
-        } else {
+            if (err) {
+                //console.error(err);
+                return res.json({ error: 'invalid url' })
+            }
 
             let newRecord = new Link({
                 link: originalUrl
@@ -103,21 +103,21 @@ apiRouter.post('/api/shorturl', (req, res) => {
                 // Handle the error appropriately
                 //return done(err);
                 res.status(500).json({ error: 'Internal Server Error' })
-            })
+            });
 
-        }
+        })
 
-    })
+    } else {
+        return res.json({ error: 'invalid url' })
+    }
    
 })
 
 apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
 
-    let idToFind = req.params.idtofind
+    if(req.params.idtofind) {
 
-    if(idToFind && idToFind !== '1') {
-
-        
+        let idToFind = req.params.idtofind
 
         // Using findById to find a record by id
         Link.findById( idToFind )
@@ -138,10 +138,6 @@ apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
             console.error(error)
         })
 
-    } else if(idToFind && idToFind === '1') {
-
-        res.redirect('https://freeCodeCamp.org')
-        
     } else {
 
         res.json({ error: 'Please specify the short url as a parameter' })
