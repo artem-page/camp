@@ -105,7 +105,7 @@ apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
         .then(foundRecord => {
             if (foundRecord) {
                 // The record was found, do something with it
-                res.json({result: foundRecord})
+                res.json({link: foundRecord.link})
             } else {
                 // No record found with the specified id
                 res.json({result: 'Record not found'})
