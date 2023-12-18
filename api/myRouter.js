@@ -77,7 +77,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
         let shortUrl = result; // Assuming 'result' contains the saved document
         // Now you can use 'shortUrl' as needed
         //return done(null, shortUrl);
-        res.json({ original_url: originalUrl, short_url: shortUrl})
+        res.json({ original_url: originalUrl, short_url: shortUrl.id})
     })
     .catch(err => {
         console.error(err);
