@@ -113,30 +113,32 @@ apiRouter.post('/api/shorturl', (req, res) => {
    
 })
 
-apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
+apiRouter.get('/api/shorturl/:id?', (req, res) => {
 
-    if(req.params.idtofind) {
+    if(req.params.id) {
 
-        let idToFind = req.params.idtofind
+        const linkId = req.params.id
 
-        // Using findById to find a record by id
-        Link.findById( idToFind )
-        .then(foundRecord => {
-            if (foundRecord) {
-                // The record was found, do something with it
-                //res.json({link: foundRecord.link})
+        try {
+            const link = await Link.findById(linkId)
+    
+            if (link) {
 
-                res.redirect('https://'+foundRecord.link)
+                res.json({link: link})
 
             } else {
-                // No record found with the specified id
-                res.json({result: 'Record not found'})
+
+                res.status(404).json({ error: 'Link not found' })
+
             }
-        })
-        .catch(error => {
-            // Handle any errors that occurred during the findOne operation
-            console.error(error)
-        })
+            
+        } catch (error) {
+
+            //console.error(error);
+
+            res.status(500).json({ error: 'Internal Server Error' })
+            
+        }
 
     } else {
 
