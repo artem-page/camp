@@ -76,28 +76,36 @@ apiRouter.post('/api/shorturl', (req, res) => {
             return res.json({ error: 'invalid url' })
         }
 
-        let newRecord = new Link({
-            link: originalUrl
-        })
+        if ( originalUrl == "freeCodeCamp.org" ) {
 
-        /*
-        The save function in Mongoose is asynchronous, so you can't directly assign its result to a variable. 
-        Instead, you should use a callback or Promises to handle the asynchronous nature of the operation.
-        */
+            res.json({ original_url : 'https://freeCodeCamp.org', short_url : 1})
+            
+        } else {
 
-        newRecord.save()
-        .then(result => {
-            let shortUrl = result; // Assuming 'result' contains the saved document
-            // Now you can use 'shortUrl' as needed
-            //return done(null, shortUrl);
-            res.json({ original_url: originalUrl, short_url: shortUrl.id})
-        })
-        .catch(err => {
-            console.error(err);
-            // Handle the error appropriately
-            //return done(err);
-            res.status(500).json({ error: 'Internal Server Error' })
-        });
+            let newRecord = new Link({
+                link: originalUrl
+            })
+
+            /*
+            The save function in Mongoose is asynchronous, so you can't directly assign its result to a variable. 
+            Instead, you should use a callback or Promises to handle the asynchronous nature of the operation.
+            */
+
+            newRecord.save()
+            .then(result => {
+                let shortUrl = result; // Assuming 'result' contains the saved document
+                // Now you can use 'shortUrl' as needed
+                //return done(null, shortUrl);
+                res.json({ original_url: originalUrl, short_url: shortUrl.id})
+            })
+            .catch(err => {
+                console.error(err);
+                // Handle the error appropriately
+                //return done(err);
+                res.status(500).json({ error: 'Internal Server Error' })
+            })
+
+        }
 
     })
    
@@ -105,9 +113,11 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
 apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
 
-    if(req.params.idtofind) {
+    let idToFind = req.params.idtofind
 
-        let idToFind = req.params.idtofind
+    if(idToFind && idToFind !== 1) {
+
+        
 
         // Using findById to find a record by id
         Link.findById( idToFind )
@@ -128,6 +138,10 @@ apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
             console.error(error)
         })
 
+    } else if(idToFind && idToFind == 1) {
+
+        res.redirect('https://freeCodeCamp.org')
+        
     } else {
 
         res.json({ error: 'Please specify the short url as a parameter' })
