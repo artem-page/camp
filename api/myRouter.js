@@ -115,7 +115,7 @@ apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
 
     let idToFind = req.params.idtofind
 
-    if(idToFind && idToFind !=== '1') {
+    if(idToFind && idToFind !== '1') {
 
         
 
