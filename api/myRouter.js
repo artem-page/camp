@@ -85,7 +85,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
                 return res.json({ error: 'invalid url' })
             }
         */
-           
+
             let newRecord = new Link({
                 link: originalUrl
             })
@@ -97,10 +97,13 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
             newRecord.save()
             .then(result => {
-                let shortUrl = result; // Assuming 'result' contains the saved document
+
+                let shortUrlId = result; // Assuming 'result' contains the saved document
+                let numericId = parseInt(shortUrlId.id.toString(), 16)
+
                 // Now you can use 'shortUrl' as needed
                 //return done(null, shortUrl);
-                res.json({ original_url: originalUrl, short_url: shortUrl.id})
+                res.json({ original_url: originalUrl, short_url: numericId})
             })
             .catch(err => {
                 console.error(err);
@@ -119,7 +122,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
 apiRouter.get('/api/shorturl/:id?', async (req, res) => {
 
-    const linkId = req.params.id
+    const linkId = new mongoose.Types.ObjectId(req.params.id).toString()
 
     try {
 
