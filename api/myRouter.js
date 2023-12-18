@@ -4,7 +4,7 @@ let express = require("express")
 let mongoose = require('mongoose')
 let apiRouter = express()
 
-
+// Database Connection
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Check if the connection is successful
@@ -61,8 +61,19 @@ const Link = mongoose.model('link', {})
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
-    let ipAddress = dns.lookup(req.body.original_url, (err, address, family) => {
-        return
+    let originalUrl = req.body.original_url
+
+    let newLink = new Link({
+        link: originalUrl
+    })
+
+    newLink.save(function(err,result){ 
+        if (err){ console.log(err) } 
+        else { console.log(result) } 
+    })
+
+    let ipAddress = dns.lookup(originalUrl, (err, address, family) => {
+        return address
     })
 
     res.json({ original_url: req.body.original_url, short_url: ipAddress})
