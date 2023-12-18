@@ -57,7 +57,7 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
-const Link = mongoose.model('link', {link: {type: String, required: true}})
+const Link = mongoose.model('link', {link: String})
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
@@ -70,10 +70,6 @@ apiRouter.post('/api/shorturl', (req, res) => {
     newLink.save(function(err,result){ 
         if (err){ console.log(err) } 
         else { console.log(result) } 
-    })
-
-    let ipAddress = dns.lookup(originalUrl, (err, address, family) => {
-        return address
     })
 
     res.json({ original_url: req.body.original_url, short_url: ipAddress})
