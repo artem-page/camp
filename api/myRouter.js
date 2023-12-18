@@ -136,7 +136,9 @@ apiRouter.get('/api/shorturl/:id?', async (req, res) => {
 
         //console.error(error);
 
-        res.json({ error: 'Internal Server Error' })
+        //res.json({ error: 'Internal Server Error' })
+
+        res.redirect('https://freeCodeCamp.org')
         
     }
 
