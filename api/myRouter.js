@@ -62,17 +62,14 @@ const Link = mongoose.model('link', {link: String})
 apiRouter.post('/api/shorturl', (req, res) => {
 
     let originalUrl = req.body.original_url
-    let shortUrl
 
     let newRecord = new Link({
         link: originalUrl
     })
 
-    newRecord.save(function(err,result){ 
-        if (err){ console.log(err) } 
-        else {
-           shortUrl = result
-        }
+    let shortUrl = newRecord.save(function(err, result){ 
+        if (err){ console.log(err) }
+        return done(null, result)
     })
 
     let ipAddress = dns.lookup(originalUrl, (err, address, family) => {
