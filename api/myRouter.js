@@ -113,37 +113,30 @@ apiRouter.post('/api/shorturl', (req, res) => {
    
 })
 
-apiRouter.get('/api/shorturl/:id?', (req, res) => {
+apiRouter.get('/api/shorturl/:id?', async (req, res) => {
 
-    if(req.params.id) {
+    const linkId = req.params.id
 
-        const linkId = req.params.id
+    try {
+        
+        const link = await Link.findById(linkId)
 
-        try {
-            const link = await Link.findById(linkId)
-    
-            if (link) {
+        if (link) {
 
-                res.json({link: link})
+            res.json({link: link})
 
-            } else {
+        } else {
 
-                res.status(404).json({ error: 'Link not found' })
+            res.json({ error: 'Link not found' })
 
-            }
-            
-        } catch (error) {
-
-            //console.error(error);
-
-            res.status(500).json({ error: 'Internal Server Error' })
-            
         }
+        
+    } catch (error) {
 
-    } else {
+        //console.error(error);
 
-        res.json({ error: 'Please specify the short url as a parameter' })
-
+        res.json({ error: 'Internal Server Error' })
+        
     }
 
 })
