@@ -100,7 +100,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
     if (isValidUrl(req.body.url)) {
 
-        let originalUrl = removeProtocol(req.body.url)
+        let originalUrl = req.body.url
 /*
         dns.lookup(originalUrl, (err, address) => {
 
