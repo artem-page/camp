@@ -60,11 +60,15 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
+let mongooseAutoIncrementPlugin = require("mongoose-auto-increment-plugin")
+
 const linkSchema = Schema({
-    linkId: {type: Number, required: true},
+    linkId: {type: Number, required: true, autoIncrement: true, initialValue: 1, step: 1},
     link: {type: String, required: true }
 },
 { versionKey: 'version' })
+
+linkSchema.plugin(mongooseAutoIncrementPlugin)
 
 const Link = mongoose.model('link', linkSchema)
 
