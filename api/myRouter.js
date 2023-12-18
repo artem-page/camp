@@ -122,7 +122,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
 apiRouter.get('/api/shorturl/:id?', async (req, res) => {
 
-    const linkId = new mongoose.Types.ObjectId(req.params.id).toString()
+    const linkId = req.params.id.toString(16)
 
     try {
 
