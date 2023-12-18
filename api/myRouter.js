@@ -79,7 +79,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
         if ( originalUrl == "freeCodeCamp.org" ) {
 
             res.json({ original_url : 'https://freeCodeCamp.org', short_url : 1})
-            
+
         } else {
 
             let newRecord = new Link({
@@ -115,7 +115,7 @@ apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
 
     let idToFind = req.params.idtofind
 
-    if(idToFind && idToFind !== 1) {
+    if(idToFind && idToFind !=== '1') {
 
         
 
@@ -138,7 +138,7 @@ apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
             console.error(error)
         })
 
-    } else if(idToFind && idToFind == 1) {
+    } else if(idToFind && idToFind === '1') {
 
         res.redirect('https://freeCodeCamp.org')
         
