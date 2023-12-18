@@ -60,7 +60,13 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
-const Link = mongoose.model('link', {link: String})
+const linkSchema = Schema({
+    linkId: {type: Number, required: true},
+    link: {type: String, required: true }
+},
+{ versionKey: 'version' })
+
+const Link = mongoose.model('link', linkSchema)
 
 function isValidUrl(url) {
     const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/)?$/
