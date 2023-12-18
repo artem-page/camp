@@ -59,9 +59,14 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 const Link = mongoose.model('link', {link: String})
 
+function removeProtocol(url) {
+    // Use a regular expression to remove "http://" or "https://"
+    return url.replace(/^https?:\/\//, '');
+}
+
 apiRouter.post('/api/shorturl', (req, res) => {
 
-    let originalUrl = req.body.original_url
+    let originalUrl = removeProtocol(req.body.original_url)
 
     let newRecord = new Link({
         link: originalUrl
@@ -105,7 +110,10 @@ apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
         .then(foundRecord => {
             if (foundRecord) {
                 // The record was found, do something with it
-                res.json({link: foundRecord.link})
+                //res.json({link: foundRecord.link})
+
+                res.redirect('https://'+foundRecord.link)
+
             } else {
                 // No record found with the specified id
                 res.json({result: 'Record not found'})
