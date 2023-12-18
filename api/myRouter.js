@@ -96,14 +96,14 @@ apiRouter.post('/api/shorturl', (req, res) => {
     if (isValidUrl(req.body.original_url)) {
 
         let originalUrl = removeProtocol(req.body.original_url)
-
+/*
         dns.lookup(originalUrl, (err, address) => {
 
             if (err) {
                 //console.error(err);
                 return res.json({ error: 'invalid url' })
             }
-
+*/
             let newRecord = new Link({
                 link: originalUrl
             })
@@ -127,7 +127,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
                 res.status(500).json({ error: 'Internal Server Error' })
             });
 
-        })
+//        })
 
     } else {
         return res.json({ error: 'invalid url' })
