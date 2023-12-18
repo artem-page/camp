@@ -72,24 +72,24 @@ function removeProtocol(url) {
 }
 
 
+// Plugin 
+
+let mongooseIncrement = require("mongoose-increment")
+
+let incrementPlugin = mongooseIncrement(mongoose)
+
 let linkSchema = new mongoose.Schema({
     link: { type: String, required: true }
 })
 
-let mongooseAutoIncrementPlugin = require("mongoose-auto-increment-plugin")
-
-mongooseAutoIncrementPlugin.initialize(mongoose.connection)
-
-linkSchema.plugin(mongooseAutoIncrementPlugin.plugin, {
-    linkId: {
-      type: Number,
-      autoIncrement: true,
-      initialValue: 0,
-      step: 1
-    },
+linkSchema.plugin(incrementPlugin, {
+    modelName: 'link',
+    fieldName: 'linkId',
+    start: 1,
+    increment: 1
 })
 
-let Link = mongoose.model('link', linkSchema)
+let Link = mongoose.model('links', linkSchema)
 
 
 

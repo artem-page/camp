@@ -12,7 +12,7 @@
 		"dotenv": "^16.3.0",
 		"express": "^4.18.2",
 		"mongoose": "^5.13.21",
-		"mongoose-auto-increment-plugin": "^1.0.2",
+		"mongoose-increment": "^2.0.0",
 		"nodemon": "^3.0.2",
 		"process": "^0.11.10",
 		"vhost": "^3.0.2"
