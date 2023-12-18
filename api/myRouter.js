@@ -67,10 +67,23 @@ apiRouter.post('/api/shorturl', (req, res) => {
         link: originalUrl
     })
 
-    let shortUrl = newRecord.save(function(err, result){ 
-        if (err){ console.log(err) }
-        return done(null, result)
+    /*
+    The save function in Mongoose is asynchronous, so you can't directly assign its result to a variable. 
+    Instead, you should use a callback or Promises to handle the asynchronous nature of the operation.
+    */
+
+    newRecord.save()
+    .then(result => {
+        let shortUrl = result; // Assuming 'result' contains the saved document
+        // Now you can use 'shortUrl' as needed
+        return done(null, shortUrl);
     })
+    .catch(err => {
+        console.error(err);
+        // Handle the error appropriately
+        return done(err);
+    });
+
 
     let ipAddress = dns.lookup(originalUrl, (err, address, family) => {
         return address
