@@ -71,7 +71,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
         if (err){ console.log(err) } 
     })
 
-    const shortUrl = newRecord.findOne()
+    const shortUrl = Link.findOne()
 
     let ipAddress = dns.lookup(originalUrl, (err, address, family) => {
         return address
