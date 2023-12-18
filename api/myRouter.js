@@ -94,6 +94,36 @@ apiRouter.post('/api/shorturl', (req, res) => {
     
 })
 
+apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
+
+    if(req.params.idtofind) {
+
+        let idToFind = req.params.idtofind
+
+    // Using findOne to find a record by id
+    Link.findOne({ _id: idToFind })
+    .then(foundRecord => {
+        if (foundRecord) {
+            // The record was found, do something with it
+            res.json({foundRecord})
+        } else {
+            // No record found with the specified id
+            res.json({result: 'Record not found'})
+        }
+    })
+    .catch(error => {
+        // Handle any errors that occurred during the findOne operation
+        console.error(error)
+    });
+
+    } else {
+
+        res.json( error: 'Please specify the short url as a parameter')
+
+    }
+
+})
+
 // list mongobd collections
 
 apiRouter.get('/api/collections/:collection?', async (req, res) => {
