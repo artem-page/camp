@@ -118,7 +118,7 @@ apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
 
     } else {
 
-        res.json( error: 'Please specify the short url as a parameter')
+        res.json({ error: 'Please specify the short url as a parameter' })
 
     }
 
