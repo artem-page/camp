@@ -93,7 +93,7 @@ let Link = mongoose.model('links', linkSchema)
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
-    if ( req.body.original_url ) {
+    //if ( req.body.original_url ) {
 
         let originalUrl = removeProtocol(req.body.original_url)
 
@@ -128,11 +128,11 @@ apiRouter.post('/api/shorturl', (req, res) => {
             });
 
         })
-
+/*
     } else {
         return res.json({ error: 'invalid url' })
     }
-   
+   */
 })
 
 apiRouter.get('/api/shorturl/:linkId?', async (req, res) => {
