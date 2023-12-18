@@ -100,21 +100,21 @@ apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
 
         let idToFind = req.params.idtofind
 
-    // Using findOne to find a record by id
-    Link.findOne({ _id: idToFind })
-    .then(foundRecord => {
-        if (foundRecord) {
-            // The record was found, do something with it
-            res.json({foundRecord})
-        } else {
-            // No record found with the specified id
-            res.json({result: 'Record not found'})
-        }
-    })
-    .catch(error => {
-        // Handle any errors that occurred during the findOne operation
-        console.error(error)
-    });
+        // Using findById to find a record by id
+        Link.findById( idToFind )
+        .then(foundRecord => {
+            if (foundRecord) {
+                // The record was found, do something with it
+                res.json({result: foundRecord})
+            } else {
+                // No record found with the specified id
+                res.json({result: 'Record not found'})
+            }
+        })
+        .catch(error => {
+            // Handle any errors that occurred during the findOne operation
+            console.error(error)
+        })
 
     } else {
 
