@@ -72,6 +72,10 @@ apiRouter.post('/api/shorturl', (req, res) => {
         else { console.log(result) } 
     })
 
+    let ipAddress = dns.lookup(originalUrl, (err, address, family) => {
+        return address
+    })
+
     res.json({ original_url: req.body.original_url, short_url: ipAddress})
 })
 
