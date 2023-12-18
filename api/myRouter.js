@@ -76,8 +76,8 @@ apiRouter.post('/api/shorturl', (req, res) => {
     if (isValidUrl(req.body.original_url)) {
 
         let linkSchema = new mongoose.Schema({
-            linkId: {type: Number, required: true, autoIncrement: true, initialValue: 1, step: 1},
-            link: {type: String, required: true }
+            linkId: { type: Number, required: true },
+            link: { type: String, required: true }
         })
         
         linkSchema.plugin(mongooseAutoIncrementPlugin)
