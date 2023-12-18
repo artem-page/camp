@@ -140,7 +140,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
    
 })
 
-apiRouter.get('/api/shorturl/:linkId?', async (req, res) => {
+apiRouter.get('/api/shorturl/:linkId?', (req, res) => {
 
     Link.findOne({ linkId: req.params.linkId }, (err, data) => {
 
