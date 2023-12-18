@@ -78,7 +78,9 @@ let linkSchema = new mongoose.Schema({
 
 let mongooseAutoIncrementPlugin = require("mongoose-auto-increment-plugin")
 
-linkSchema.plugin(mongooseAutoIncrementPlugin, {
+mongooseAutoIncrementPlugin.initialize(mongoose.connection)
+
+linkSchema.plugin(mongooseAutoIncrementPlugin.plugin, {
     linkId: {
       type: Number,
       autoIncrement: true,
