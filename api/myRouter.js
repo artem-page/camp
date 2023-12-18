@@ -61,6 +61,8 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // shorturl-microservice
 
+/*
+
 function isValidUrl(url) {
     const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/)?$/
     return urlPattern.test(url)
@@ -71,6 +73,7 @@ function removeProtocol(url) {
     return url.replace(/^https?:\/\//, '');
 }
 
+*/
 
 // Plugin 
 
@@ -93,9 +96,13 @@ let Link = mongoose.model('links', linkSchema)
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
-    if (isValidUrl(req.body.original_url)) {
+    let originalUrl
 
-        let originalUrl = removeProtocol(req.body.original_url)
+    try {
+
+        //let originalUrl = removeProtocol(req.body.original_url)
+        originalUrl = new URL(req.body.original_url)
+        originalUrl = originalUrl.hostname
 
         dns.lookup(originalUrl, (err, address) => {
 
@@ -129,7 +136,8 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
         })
 
-    } else {
+    } catch (error) {
+       //console.error('Invalid URL:', req.body.original_url)
         return res.json({ error: 'invalid url' })
     }
    
