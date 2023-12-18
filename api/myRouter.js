@@ -68,35 +68,39 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
     let originalUrl = removeProtocol(req.body.original_url)
 
-    let newRecord = new Link({
-        link: originalUrl
+    // Perform DNS lookup
+    dns.lookup(originalUrl, (err, address) => {
+
+        if (err) {
+            //console.error(err);
+            return res.json({ error: 'invalid url' })
+        }
+
+        let newRecord = new Link({
+            link: originalUrl
+        })
+
+        /*
+        The save function in Mongoose is asynchronous, so you can't directly assign its result to a variable. 
+        Instead, you should use a callback or Promises to handle the asynchronous nature of the operation.
+        */
+
+        newRecord.save()
+        .then(result => {
+            let shortUrl = result; // Assuming 'result' contains the saved document
+            // Now you can use 'shortUrl' as needed
+            //return done(null, shortUrl);
+            res.json({ original_url: originalUrl, short_url: shortUrl.id})
+        })
+        .catch(err => {
+            console.error(err);
+            // Handle the error appropriately
+            //return done(err);
+            res.status(500).json({ error: 'Internal Server Error' })
+        });
+
     })
-
-    /*
-    The save function in Mongoose is asynchronous, so you can't directly assign its result to a variable. 
-    Instead, you should use a callback or Promises to handle the asynchronous nature of the operation.
-    */
-
-    newRecord.save()
-    .then(result => {
-        let shortUrl = result; // Assuming 'result' contains the saved document
-        // Now you can use 'shortUrl' as needed
-        //return done(null, shortUrl);
-        res.json({ original_url: originalUrl, short_url: shortUrl.id})
-    })
-    .catch(err => {
-        console.error(err);
-        // Handle the error appropriately
-        //return done(err);
-        res.status(500).json({ error: 'Internal Server Error' })
-    });
-
-
-    let ipAddress = dns.lookup(originalUrl, (err, address, family) => {
-        return address
-    })
-
-    
+   
 })
 
 apiRouter.get('/api/shorturl/:idtofind?', (req, res) => {
