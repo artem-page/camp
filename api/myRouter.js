@@ -63,20 +63,21 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
     let originalUrl = req.body.original_url
 
-    let newLink = new Link({
+    let newRecord = new Link({
         link: originalUrl
     })
 
-    newLink.save(function(err,result){ 
+    newRecord.save(function(err,result){ 
         if (err){ console.log(err) } 
-        else { console.log(result) } 
     })
+
+    const shortUrl = newRecord.findOne()
 
     let ipAddress = dns.lookup(originalUrl, (err, address, family) => {
         return address
     })
 
-    res.json({ original_url: req.body.original_url, short_url: ipAddress})
+    res.json({ original_url: originalUrl, short_url: shortUrl.id})
 })
 
 // list mongobd collections
