@@ -4,6 +4,9 @@ let express = require("express")
 let mongoose = require('mongoose')
 let apiRouter = express()
 
+let cors = require('cors')
+apiRouter.use(cors({ optionsSuccessStatus: 200 })) // some legacy browsers choke on 204
+
 // Database Connection
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -136,9 +139,7 @@ apiRouter.get('/api/shorturl/:id?', async (req, res) => {
 
         //console.error(error);
 
-        //res.json({ error: 'Internal Server Error' })
-
-        res.redirect('https://freeCodeCamp.org')
+        res.json({ error: 'Link not found' })
         
     }
 
