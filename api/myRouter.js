@@ -118,12 +118,13 @@ apiRouter.get('/api/shorturl/:id?', async (req, res) => {
     const linkId = req.params.id
 
     try {
-        
+
         const link = await Link.findById(linkId)
 
         if (link) {
 
-            res.json({link: link})
+            //res.json({link: link.link})
+            res.redirect('https://'+link.link)
 
         } else {
 
