@@ -71,6 +71,11 @@ function removeProtocol(url) {
     return url.replace(/^https?:\/\//, '');
 }
 
+// Regex
+const reg1 = /^https:\/\//;
+const reg2 = /^http:\/\//;
+const reg3 = /\/$/;
+
 
 // Plugin 
 
@@ -137,31 +142,25 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
 apiRouter.get('/api/shorturl/:linkId?', async (req, res) => {
 
-    const linkId = req.params.linkId
+    Link.findOne({ linkId: req.params.linkId }, (err, data) => {
 
-    try {
-
-        //const link = await Link.findById(linkId)
-        const link = await Link.findOne({ linkId: linkId })
-
-        if (link) {
-
-            //res.json({link: link.link})
-            res.redirect('https://'+link.link)
-
-        } else {
+        if (err) {
 
             res.json({ error: 'Link not found' })
 
+        } else {
+
+            if (reg1.test(data.link) || reg2.test(data.link)) {
+
+                res.redirect(data.link)
+
+            } else {
+
+                res.redirect("https://" + data.link)
+
+            }
         }
-        
-    } catch (error) {
-
-        //console.error(error);
-
-        res.json({ error: 'Link not found' })
-        
-    }
+    })
 
 })
 
