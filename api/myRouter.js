@@ -76,7 +76,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
         return address
     })
 
-    res.json({ original_url: originalUrl, short_url: shortUrl.link})
+    res.json({ original_url: originalUrl, short_url: shortUrl})
 })
 
 // list mongobd collections
