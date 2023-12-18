@@ -91,8 +91,6 @@ linkSchema.plugin(incrementPlugin, {
 
 let Link = mongoose.model('links', linkSchema)
 
-
-
 apiRouter.post('/api/shorturl', (req, res) => {
 
     if (isValidUrl(req.body.original_url)) {
@@ -120,7 +118,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
                 let shortUrl = result; // Assuming 'result' contains the saved document
                 // Now you can use 'shortUrl' as needed
                 //return done(null, shortUrl);
-                res.json({ original_url: originalUrl, short_url: shortUrl.id})
+                res.json({ original_url: originalUrl, short_url: shortUrl.linkId})
             })
             .catch(err => {
                 console.error(err);
@@ -137,13 +135,14 @@ apiRouter.post('/api/shorturl', (req, res) => {
    
 })
 
-apiRouter.get('/api/shorturl/:id?', async (req, res) => {
+apiRouter.get('/api/shorturl/:linkId?', async (req, res) => {
 
-    const linkId = req.params.id
+    const linkId = req.params.linkId
 
     try {
 
-        const link = await Link.findById(linkId)
+        //const link = await Link.findById(linkId)
+        const link = await Link.findOne({ linkId: linkId })
 
         if (link) {
 
