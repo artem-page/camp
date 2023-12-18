@@ -62,6 +62,7 @@ const Link = mongoose.model('link', {link: String})
 apiRouter.post('/api/shorturl', (req, res) => {
 
     let originalUrl = req.body.original_url
+    let shortUrl
 
     let newRecord = new Link({
         link: originalUrl
@@ -69,15 +70,16 @@ apiRouter.post('/api/shorturl', (req, res) => {
 
     newRecord.save(function(err,result){ 
         if (err){ console.log(err) } 
+        else {
+           shortUrl = result
+        }
     })
-
-    const shortUrl = Link.findOne()
 
     let ipAddress = dns.lookup(originalUrl, (err, address, family) => {
         return address
     })
 
-    res.json({ original_url: originalUrl, short_url: shortUrl.id})
+    res.json({ original_url: originalUrl, short_url: shortUrl})
 })
 
 // list mongobd collections
