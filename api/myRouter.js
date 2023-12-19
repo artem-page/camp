@@ -146,10 +146,10 @@ apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
             //const short_url = parseInt(nanoid(), 10)
             
             // Generate a unique identifier for short_url using uuid
-            let short_url = uuid.v4()
+            let shortUrl = uuid.v4()
 
             // Create a new URL entry
-            urlEntry = new Url({ original_url: url, short_url })
+            urlEntry = new Url({ original_url: url, short_url: shortUrl })
 
             await urlEntry.save()
 
