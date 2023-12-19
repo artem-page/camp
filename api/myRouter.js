@@ -273,7 +273,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
 
         const { _id } = req.params
 
-        const { description, duration, date } = req.body
+        const { date, duration, description } = req.body
   
         const user = await User.findById(_id)
   
@@ -291,7 +291,8 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
         //user.log.push(savedExercise)
         //await user.save()
   
-        res.json({ ...savedExercise.toObject() })
+        //res.json({ ...savedExercise.toObject() })
+        res.json({ savedExercise })
 
     } catch (error) {
 
