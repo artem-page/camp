@@ -22,34 +22,33 @@
 
         <p>
             <form action="/api/shorturl" method="POST">
-                <p><label>URL: </label> <input type="text" name="url" /> <input type="submit" value="POST URL" /></p>
+                <p>
+                    <label>URL: </label> <input type="text" name="url" /> 
+                    <input type="submit" value="POST URL" />
+                </p>
             </form>
         </p>
 
-        <div class="container">
-            <h1>Exercise tracker</h1>
-            <form action="/api/users" method="post">
-              <h2>Create a New User</h2>
-              <p><code>POST /api/users</code></p>
-              <input id="uname" type="text" name="username" placeholder="username" />
-              <input type="submit" value="Submit" />
+        <p>
+            <form action="/api/users" method="POST">
+                <p>
+                    <input id="uname" type="text" name="username" placeholder="username" />
+                    <input type="submit" value="Submit" />
+                </p>
             </form>
+        </p>
+
+        <p>
             <form action="/api/users/:_id/exercises" id="exercise-form" method="post">
-              <h2>Add exercises</h2>
-              <p><code>POST /api/users/:_id/exercises</code></p>
-              <input id="uid" type="text" name=":_id" placeholder=":_id" />
-              <input id="desc" type="text" name="description" placeholder="description*" />
-              <input id="dur" type="text" name="duration" placeholder="duration* (mins.)" />
-              <input id="date" type="text" name="date" placeholder="date (yyyy-mm-dd)" />
-              <input type="submit" value="Submit" />
+                <p>
+                    <input id="uid" type="text" name=":_id" placeholder=":_id" />
+                    <input id="desc" type="text" name="description" placeholder="description*" />
+                    <input id="dur" type="text" name="duration" placeholder="duration* (mins.)" />
+                    <input id="date" type="text" name="date" placeholder="date (yyyy-mm-dd)" />
+                    <input type="submit" value="Submit" />
+                </p>
             </form>
-            <p>
-              <strong>GET user's exercise log: </strong>
-              <code>GET /api/users/:_id/logs?[from][&amp;to][&amp;limit]</code>
-            </p>
-            <p><strong>[ ]</strong> = optional</p>
-            <p><strong>from, to</strong> = dates (yyyy-mm-dd); <strong>limit</strong> = number</p>
-        </div>
+        </p>
 
         <script>
         const exerciseForm = document.getElementById("exercise-form");
