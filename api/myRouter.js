@@ -305,50 +305,34 @@ apiRouter.get('/api/users/:_id/logs', async (req, res) => {
     try {
         
         const { _id } = req.params
-
         const { from, to, limit } = req.query
+        const userId = mongoose.Types.ObjectId(_id)
   
-        const user = await User.findById(_id)
+        const user = await User.findById(userId).populate({
+            path: 'exercises',
+            select: 'description duration date -_id',
+            match: {
+              date: { $gte: from || new Date(0), $lte: to || new Date() }
+            },
+            options: { limit: limit ? parseInt(limit, 10) : 0 }
+        })
   
         if (!user) {
-
-            return res.status(404).json({ error: 'User not found' })
-            
+            return res.json({ error: 'User not found' })
         }
-  
-        let log = user.log
-  
-        if (from || to) {
-
-        log = log.filter((exercise) => {
-
-            const exerciseDate = new Date(exercise.date).getTime()
-  
-            if (from && new Date(from).getTime() > exerciseDate) {
-                return false
-            }
-  
-            if (to && new Date(to).getTime() < exerciseDate) {
-                return false
-            }
-  
-            return true
-
+    
+        const log = user.exercises.map((exercise) => ({
+            description: exercise.description,
+            duration: exercise.duration,
+            date: exercise.date.toDateString() // Format date as a string
+        }))
+    
+        res.json({
+            username: user.username,
+            count: log.length,
+            _id: user._id,
+            log
         })
-
-    }
-  
-    if (limit) {
-
-        log = log.slice(0, parseInt(limit, 10))
-
-    }
-
-    res.json({
-        ...user.toObject(),
-        log,
-        count: log.length,
-    })
 
     } catch (error) {
 
