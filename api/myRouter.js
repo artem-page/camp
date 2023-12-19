@@ -3,11 +3,11 @@ let dns = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
 
+let increment = require('mongoose-increment')
 //const { customAlphabet } = require('nanoid')
-import { customAlphabet } from 'nanoid'
+//import { customAlphabet } from 'nanoid'
 
 let apiRouter = express()
-
 
 let cors = require('cors')
 apiRouter.use(cors({ optionsSuccessStatus: 200 })) // some legacy browsers choke on 204
@@ -22,16 +22,16 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 })
 
-let mongooseIncrement = require("mongoose-increment")
-
-let incrementPlugin = mongooseIncrement(mongoose)
-
 // Schema
 
 const urlSchema = new mongoose.Schema({
     original_url: { type: String, required: true },
-    short_url: { type: Number, required: true, unique: true }
+    short_url: { type: Number, unique: true }
 })
+
+// Apply the increment plugin to generate auto-incrementing numbers
+urlSchema.plugin(increment, { modelName: 'Url', fieldName: 'short_url' });
+
 
 /*
 const linkSchema = new mongoose.Schema({
@@ -115,8 +115,6 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
     URL SHORTENER MICROSERVICE
 */
 
-const nanoid = customAlphabet('0123456789', 8)
-
 // Middleware to handle invalid URLs
 const validateUrl = (req, res, next) => {
 
@@ -147,13 +145,13 @@ apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
 
         if (!urlEntry) {
             
-        // Generate a short URL using nanoid and convert it to a number
-        const short_url = parseInt(nanoid(), 10)
+            // Generate a short URL using nanoid and convert it to a number
+            //const short_url = parseInt(nanoid(), 10)
 
-        // Create a new URL entry
-        urlEntry = new Url({ original_url: url, short_url })
+            // Create a new URL entry
+            urlEntry = new Url({ original_url: url })
 
-        await urlEntry.save()
+            await urlEntry.save()
 
         }
 
