@@ -109,13 +109,18 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 const urlPattern = /^(http|https):\/\/www\.[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/\S*)?$/
 
 const isValidUrl = (url) => {
-    //return urlPattern.test(url)
-    try {
-        new URL(url)
-        return true
-    } catch (error) {
-        return false
+    const matchPattern = urlPattern.test(url)
+    
+    if (!matchPattern) {
+        callback(false)
+        return
     }
+
+    const host = new URL(url).hostname
+
+    dns.lookup(host, (err) => {
+        callback(!err);
+    })
 }
 
 const validateUrl = (req, res, next) => {
@@ -135,8 +140,6 @@ apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
 
         const { url } = req.body
 
-        if(urlPattern.test(url)) {
-
         // Check if the URL is already in the database
         let urlEntry = await Url.findOne({ original_url: url })
 
@@ -153,10 +156,6 @@ apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
             original_url: urlEntry.original_url,
             short_url: urlEntry.short_url
         })
-
-        } else {
-            res.json({ error: 'invalid url' })
-        }
 
     } catch (error) {
 
