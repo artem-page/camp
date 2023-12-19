@@ -34,14 +34,13 @@ urlSchema.plugin(AutoIncrement, { inc_field: 'short_url' })
 
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, unique: true, required: true },
-    log: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Exercise' }]
+    username: { type: String, required: true }
 })
 
 const exerciseSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    description: String,
-    duration: Number,
+    description: { type: String, required: true },
+    duration: { type: Number, required: true },
     date: { type: Date, default: Date.now }
 })
 
@@ -241,7 +240,7 @@ apiRouter.post('/api/users', async (req, res) => {
 
         const savedUser = await user.save()
 
-        res.json(savedUser)
+        res.json({ username: savedUser.username, _id: savedUser._id })
 
     } catch (error) {
 
@@ -255,7 +254,7 @@ apiRouter.get('/api/users', async (req, res) => {
 
     try {
 
-        const users = await User.find()
+        const users = await User.find({}, 'username _id')
 
         res.json(users)
 
@@ -272,26 +271,24 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
     try {
 
         const { _id } = req.params
-
         const { description, duration, date } = req.body
-  
-        const user = await User.findById(_id)
-  
-        if (!user) {
-
-            return res.status(404).json({ error: 'User not found' })
-
-        }
-  
-        const exercise = new Exercise({ userId: user._id, description, duration, date })
-
+        const userId = mongoose.Types.ObjectId(_id)
+    
+        const exercise = new Exercise({ userId, description, duration, date })
+    
         const savedExercise = await exercise.save()
-  
-        // Update user's log array
-        user.log.push(savedExercise)
+    
+        const user = await User.findById(userId)
+        user.exercises.push(savedExercise)
         await user.save()
-  
-        res.json({ ...user.toObject(), ...savedExercise.toObject() })
+    
+        res.json({
+          username: user.username,
+          description: savedExercise.description,
+          duration: savedExercise.duration,
+          date: savedExercise.date.toDateString(),
+          _id: user._id
+        })
 
     } catch (error) {
 
@@ -305,50 +302,34 @@ apiRouter.get('/api/users/:_id/logs', async (req, res) => {
     try {
         
         const { _id } = req.params
-
         const { from, to, limit } = req.query
-  
-        const user = await User.findById(_id)
-  
-        if (!user) {
-
-            return res.status(404).json({ error: 'User not found' })
-            
-        }
-  
-        let log = user.log
-  
-        if (from || to) {
-
-        log = log.filter((exercise) => {
-
-            const exerciseDate = new Date(exercise.date).getTime()
-  
-            if (from && new Date(from).getTime() > exerciseDate) {
-                return false
-            }
-  
-            if (to && new Date(to).getTime() < exerciseDate) {
-                return false
-            }
-  
-            return true
-
+        const userId = mongoose.Types.ObjectId(_id)
+    
+        const user = await User.findById(userId).populate({
+          path: 'exercises',
+          select: 'description duration date -_id',
+          match: {
+            date: { $gte: from || new Date(0), $lte: to || new Date() }
+          },
+          options: { limit: limit ? parseInt(limit, 10) : 0 }
         })
-
-    }
-  
-    if (limit) {
-
-        log = log.slice(0, parseInt(limit, 10))
-
-    }
-
-    res.json({
-        ...user.toObject(),
-        log,
-        count: log.length,
-    })
+    
+        if (!user) {
+          return res.json({ error: 'User not found' })
+        }
+    
+        const log = user.exercises.map((exercise) => ({
+          description: exercise.description,
+          duration: exercise.duration,
+          date: exercise.date.toDateString()
+        }))
+    
+        res.json({
+          username: user.username,
+          count: log.length,
+          _id: user._id,
+          log
+        })
 
     } catch (error) {
 
