@@ -5,8 +5,7 @@ let mongoose = require('mongoose')
 
 let apiRouter = express()
 
-//const { customAlphabet } = require('nanoid')
-import { customAlphabet } from 'nanoid'
+let { customAlphabet } = require('nanoid')
 
 let cors = require('cors')
 apiRouter.use(cors({ optionsSuccessStatus: 200 })) // some legacy browsers choke on 204
