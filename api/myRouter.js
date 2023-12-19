@@ -292,7 +292,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
             description: savedExercise.description
         }
 
-        res.json(user)
+        res.json(response)
 
     } catch (error) {
 
