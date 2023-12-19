@@ -277,9 +277,12 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
 
         const savedExercise = await exercise.save()
 
-        const user = await User.findById(userId)
-        user.exercises.push(savedExercise)
-        await user.save()
+        // Find the user and update the exercises array
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { $push: { exercises: savedExercise } },
+            { new: true } // Return the updated user
+        )
 
         const response = {
             username: user.username,
