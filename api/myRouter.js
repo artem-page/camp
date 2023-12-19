@@ -266,78 +266,78 @@ apiRouter.get('/api/users', async (req, res) => {
     }
 })
 
-// Create a new exercise for a specific user
+// Add exercise for a user
 apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
-
     try {
-
         const { _id } = req.params
+        const { description, duration, date } = req.body
+        const userId = mongoose.Types.ObjectId(_id)
 
-        const { date, duration, description } = req.body
-  
-        const user = await User.findById(_id)
-  
-        if (!user) {
-
-            return res.status(404).json({ error: 'User not found' })
-
-        }
-  
-        const exercise = new Exercise({ userId: user._id, date, duration, description })
+        const exercise = new Exercise({ userId, description, duration, date })
 
         const savedExercise = await exercise.save()
-  
-        // Update user's log array
-        user.log.push(savedExercise)
+
+        const user = await User.findById(userId)
+        user.exercises.push(savedExercise)
         await user.save()
-  
-        res.json({ ...savedExercise.toObject() })
+
+        const response = {
+            username: user.username,
+            _id: user._id,
+            description: savedExercise.description,
+            duration: savedExercise.duration,
+            date: savedExercise.date.toDateString()
+        }
+
+        res.json(response)
 
     } catch (error) {
 
-        res.status(400).json({ error: error.message })
+        res.status(500).json({ error: error.message })
 
     }
 })
-
-// Get exercise log for a specific user
+  
+// Get full exercise log of a user
 apiRouter.get('/api/users/:_id/logs', async (req, res) => {
     try {
-        
+
         const { _id } = req.params
         const { from, to, limit } = req.query
         const userId = mongoose.Types.ObjectId(_id)
-  
+
         const user = await User.findById(userId).populate({
             path: 'exercises',
             select: 'description duration date -_id',
             match: {
-              date: { $gte: from || new Date(0), $lte: to || new Date() }
+                date: { $gte: from || new Date(0), $lte: to || new Date() }
             },
             options: { limit: limit ? parseInt(limit, 10) : 0 }
         })
-  
+
         if (!user) {
             return res.json({ error: 'User not found' })
         }
-    
+
         const log = user.exercises.map((exercise) => ({
-            description: exercise.description,
-            duration: exercise.duration,
-            date: exercise.date.toDateString() // Format date as a string
+            description: String(exercise.description), // Ensure it's a string
+            duration: Number(exercise.duration), // Ensure it's a number
+            date: exercise.date.toDateString()
         }))
-    
-        res.json({
+
+        const response = {
             username: user.username,
             count: log.length,
             _id: user._id,
             log
-        })
+        }
+
+        res.json(response)
 
     } catch (error) {
 
-      res.status(500).json({ error: error.message })
-
+        res.status(500).json({ error: error.message })
+        
     }
 })
 
