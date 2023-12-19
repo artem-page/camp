@@ -83,8 +83,10 @@ let mongooseIncrement = require("mongoose-increment")
 
 let incrementPlugin = mongooseIncrement(mongoose)
 
-let linkSchema = new mongoose.Schema({
-    link: { type: String, required: true }
+// Schema
+
+const linkSchema = new mongoose.Schema({
+    link: { type: String, unique: true, required: true }
 })
 
 linkSchema.plugin(incrementPlugin, {
@@ -94,7 +96,26 @@ linkSchema.plugin(incrementPlugin, {
     increment: 1
 })
 
-let Link = mongoose.model('links', linkSchema)
+const userSchema = new mongoose.Schema({
+    username: { type: String, unique: true, required: true }
+})
+
+const exerciseSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    description: String,
+    duration: Number,
+    date: { type: Date, default: Date.now }
+})
+
+// Model
+
+const Link = mongoose.model('links', linkSchema)
+
+const User = mongoose.model('User', userSchema)
+
+const Exercise = mongoose.model('Exercise', exerciseSchema)
+
+// POST shorturl
 
 apiRouter.post('/api/shorturl', (req, res) => {
 
@@ -123,7 +144,7 @@ apiRouter.post('/api/shorturl', (req, res) => {
                 let shortUrl = result; // Assuming 'result' contains the saved document
                 // Now you can use 'shortUrl' as needed
                 //return done(null, shortUrl);
-                res.json({ original_url: originalUrl, short_url: shortUrl.linkId})
+                res.json({ original_url: originalUrl, short_url: shortUrl.linkId })
             })
             .catch(err => {
                 console.error(err);
@@ -204,5 +225,138 @@ apiRouter.get('/api/collections/:collection?', async (req, res) => {
     }
 
 })
+
+/*
+    Exercise Tracker
+*/
+
+// Create a new user
+apiRouter.post('/api/users', async (req, res) => {
+
+    try {
+
+        const { username } = req.body
+
+        const user = new User({ username })
+
+        const savedUser = await user.save()
+
+        res.json(savedUser)
+
+    } catch (error) {
+
+        res.status(400).json({ error: error.message })
+
+    }
+})
+
+// Get all users
+apiRouter.get('/api/users', async (req, res) => {
+
+    try {
+
+        const users = await User.find()
+
+        res.json(users)
+
+    } catch (error) {
+
+        res.status(500).json({ error: error.message })
+
+    }
+})
+
+// Create a new exercise for a specific user
+apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
+
+    try {
+
+        const { _id } = req.params
+
+        const { description, duration, date } = req.body
+  
+        const user = await User.findById(_id)
+  
+        if (!user) {
+
+            return res.status(404).json({ error: 'User not found' })
+
+        }
+  
+        const exercise = new Exercise({ userId: user._id, description, duration, date })
+
+        const savedExercise = await exercise.save()
+  
+        // Update user's log array
+        user.log.push(savedExercise)
+        await user.save()
+  
+        res.json({ ...user.toObject(), ...savedExercise.toObject() })
+
+    } catch (error) {
+
+        res.status(400).json({ error: error.message })
+
+    }
+})
+
+// Get exercise log for a specific user
+apiRouter.get('/api/users/:_id/logs', async (req, res) => {
+    try {
+        
+        const { _id } = req.params
+
+        const { from, to, limit } = req.query
+  
+        const user = await User.findById(_id)
+  
+        if (!user) {
+
+            return res.status(404).json({ error: 'User not found' })
+            
+        }
+  
+        let log = user.log
+  
+        if (from || to) {
+
+        log = log.filter((exercise) => {
+
+            const exerciseDate = new Date(exercise.date).getTime()
+  
+            if (from && new Date(from).getTime() > exerciseDate) {
+                return false
+            }
+  
+            if (to && new Date(to).getTime() < exerciseDate) {
+                return false
+            }
+  
+            return true
+
+        })
+
+    }
+  
+    if (limit) {
+
+        log = log.slice(0, parseInt(limit, 10))
+
+    }
+
+    res.json({
+        ...user.toObject(),
+        log,
+        count: log.length,
+    })
+
+    } catch (error) {
+
+      res.status(500).json({ error: error.message })
+
+    }
+})
+
+// Export
 
 module.exports = apiRouter
