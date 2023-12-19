@@ -3,7 +3,8 @@ let dns = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
 let bodyParser = require('body-parser')
-let uuid = require('uuid')
+const AutoIncrement = require('mongoose-sequence')(mongoose)
+//let uuid = require('uuid')
 //let increment = require('mongoose-increment')
 //const { customAlphabet } = require('nanoid')
 //import { customAlphabet } from 'nanoid'
@@ -34,7 +35,7 @@ const urlSchema = new mongoose.Schema({
 
 // Apply the increment plugin to generate auto-incrementing numbers
 //urlSchema.plugin(increment, { modelName: 'Url', fieldName: 'short_url' });
-
+urlSchema.plugin(AutoIncrement, { inc_field: 'short_url' })
 
 /*
 const linkSchema = new mongoose.Schema({
@@ -146,10 +147,10 @@ apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
             //const short_url = parseInt(nanoid(), 10)
             
             // Generate a unique identifier for short_url using uuid
-            let shortUrl = uuid.v4()
+            //let shortUrl = uuid.v4()
 
             // Create a new URL entry
-            urlEntry = new Url({ original_url: url, short_url: shortUrl })
+            urlEntry = new Url({ original_url: url })
 
             await urlEntry.save()
 
