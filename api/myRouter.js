@@ -2,10 +2,10 @@ require('dotenv').config()
 let dns = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
+let crypto = require('crypto')
 
 let apiRouter = express()
 
-let { customAlphabet } = require('nanoid')
 
 let cors = require('cors')
 apiRouter.use(cors({ optionsSuccessStatus: 200 })) // some legacy browsers choke on 204
@@ -117,6 +117,7 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 
 // Middleware to handle invalid URLs
 const validateUrl = (req, res, next) => {
+
     const { url } = req.body
   
     try {
@@ -133,7 +134,7 @@ const validateUrl = (req, res, next) => {
 }
 
 // Create a short URL
-app.post('/api/shorturl', validateUrl, async (req, res) => {
+apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
 
     try {
 
@@ -144,7 +145,9 @@ app.post('/api/shorturl', validateUrl, async (req, res) => {
 
         if (!urlEntry) {
         // Generate a short URL using nanoid and convert it to a number
-        const short_url = parseInt(nanoid(), 10);
+        // const short_url = parseInt(nanoid(), 10)
+        // Generate a random number using crypto
+        const short_url = crypto.randomInt(1000, 9999)
 
         // Create a new URL entry
         urlEntry = new Url({ original_url: url, short_url })
