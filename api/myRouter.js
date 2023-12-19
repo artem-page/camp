@@ -18,11 +18,62 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 })
 
+let mongooseIncrement = require("mongoose-increment")
+
+let incrementPlugin = mongooseIncrement(mongoose)
+
+// Schema
+
+const { customAlphabet } = require('nanoid')
+
+const urlSchema = new mongoose.Schema({
+    original_url: { type: String, required: true },
+    short_url: { type: Number, required: true, unique: true }
+})
+
+/*
+const linkSchema = new mongoose.Schema({
+    link: { type: String, unique: true, required: true }
+})
+
+linkSchema.plugin(incrementPlugin, {
+    modelName: 'link',
+    fieldName: 'linkId',
+    start: 1,
+    increment: 1
+})
+*/
+
+const userSchema = new mongoose.Schema({
+    username: { type: String, unique: true, required: true },
+    log: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Exercise' }]
+})
+
+const exerciseSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    description: String,
+    duration: Number,
+    date: { type: Date, default: Date.now }
+})
+
+// Model
+
+const Url = mongoose.model('Url', urlSchema)
+//const Link = mongoose.model('links', linkSchema)
+
+const User = mongoose.model('User', userSchema)
+
+const Exercise = mongoose.model('Exercise', exerciseSchema)
+
 // bodyParser 
 
 let bodyParser = require('body-parser')
+
 apiRouter.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
+
 apiRouter.use(bodyParser.json())
+
+const nanoid = customAlphabet('0123456789', 8)
 
 // timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
@@ -59,135 +110,89 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
     res.json({ ipaddress: clientIP, language: clientHeaders["accept-language"], software: clientHeaders["user-agent"] })
 })
 
-// shorturl-microservice
 
-function isValidUrl(url) {
-    const urlPattern = /^(http:\/\/|https:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/)?$/
-    return urlPattern.test(url)
-}
-
-function removeProtocol(url) {
-    // Use a regular expression to remove "http://" or "https://"
-    return url.replace(/^https?:\/\//, '');
-}
-
-// Regex
-const reg1 = /^https:\/\//;
-const reg2 = /^http:\/\//;
-const reg3 = /\/$/;
-
-
-// Plugin 
-
-let mongooseIncrement = require("mongoose-increment")
-
-let incrementPlugin = mongooseIncrement(mongoose)
-
-// Schema
-
-const linkSchema = new mongoose.Schema({
-    link: { type: String, unique: true, required: true }
-})
-
-linkSchema.plugin(incrementPlugin, {
-    modelName: 'link',
-    fieldName: 'linkId',
-    start: 1,
-    increment: 1
-})
-
-const userSchema = new mongoose.Schema({
-    username: { type: String, unique: true, required: true },
-    log: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Exercise' }]
-})
-
-const exerciseSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    description: String,
-    duration: Number,
-    date: { type: Date, default: Date.now }
-})
-
-// Model
-
-const Link = mongoose.model('links', linkSchema)
-
-const User = mongoose.model('User', userSchema)
-
-const Exercise = mongoose.model('Exercise', exerciseSchema)
-
-// POST shorturl
-
-apiRouter.post('/api/shorturl', (req, res) => {
-
-    if (isValidUrl(req.body.url)) {
-
-        let originalUrl = req.body.url
 /*
-        dns.lookup(originalUrl, (err, address) => {
-
-            if (err) {
-                //console.error(err);
-                return res.json({ error: 'invalid url' })
-            }
+    URL SHORTENER MICROSERVICE
 */
-            let newRecord = new Link({
-                link: originalUrl
-            })
 
-            /*
-            The save function in Mongoose is asynchronous, so you can't directly assign its result to a variable. 
-            Instead, you should use a callback or Promises to handle the asynchronous nature of the operation.
-            */
+// Middleware to handle invalid URLs
+const validateUrl = (req, res, next) => {
+    const { url } = req.body
+  
+    try {
 
-            newRecord.save()
-            .then(result => {
-                let shortUrl = result; // Assuming 'result' contains the saved document
-                // Now you can use 'shortUrl' as needed
-                //return done(null, shortUrl);
-                res.json({ original_url: originalUrl, short_url: shortUrl.linkId })
-            })
-            .catch(err => {
-                console.error(err);
-                // Handle the error appropriately
-                //return done(err);
-                res.status(500).json({ error: 'Internal Server Error' })
-            });
+      new URL(url)
 
-//        })
+      next()
 
-    } else {
-        return res.json({ error: 'invalid url' })
+    } catch (error) {
+
+      res.json({ error: 'invalid url' })
+      
     }
-   
-})
+}
 
-apiRouter.get('/api/shorturl/:linkId?', (req, res) => {
+// Create a short URL
+app.post('/api/shorturl', validateUrl, async (req, res) => {
 
-    Link.findOne({ linkId: req.params.linkId }, (err, data) => {
+    try {
 
-        if (err) {
+        const { url } = req.body
 
-            res.json({ error: 'Link not found' })
+        // Check if the URL is already in the database
+        let urlEntry = await Url.findOne({ original_url: url })
+
+        if (!urlEntry) {
+        // Generate a short URL using nanoid and convert it to a number
+        const short_url = parseInt(nanoid(), 10);
+
+        // Create a new URL entry
+        urlEntry = new Url({ original_url: url, short_url })
+
+        await urlEntry.save()
+
+        }
+
+        res.json({
+            original_url: urlEntry.original_url,
+            short_url: urlEntry.short_url
+        })
+
+    } catch (error) {
+
+        res.status(500).json({ error: error.message })
+
+    }
+});
+  
+// Redirect to the original URL
+apiRouter.get('/api/shorturl/:short_url', async (req, res) => {
+
+    try {
+
+        const { short_url } = req.params
+
+        const urlEntry = await Url.findOne({ short_url })
+        
+        if (urlEntry) {
+
+            res.redirect(urlEntry.original_url)
 
         } else {
 
-            if (reg1.test(data.link) || reg2.test(data.link)) {
+            res.json({ error: 'Short URL not found' })
 
-                res.redirect(data.link)
-
-            } else {
-
-                res.redirect("https://" + data.link)
-
-            }
         }
-    })
+
+    } catch (error) {
+
+        res.status(500).json({ error: error.message })
+
+    }
 
 })
 
 // list mongobd collections
-
 apiRouter.get('/api/collections/:collection?', async (req, res) => {
 
     if(!req.params.collection) {
