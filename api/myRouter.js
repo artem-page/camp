@@ -3,7 +3,7 @@ let dns = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
 
-let increment = require('mongoose-increment')
+//let increment = require('mongoose-increment')
 //const { customAlphabet } = require('nanoid')
 //import { customAlphabet } from 'nanoid'
 
@@ -30,7 +30,7 @@ const urlSchema = new mongoose.Schema({
 })
 
 // Apply the increment plugin to generate auto-incrementing numbers
-urlSchema.plugin(increment, { modelName: 'Url', fieldName: 'short_url' });
+//urlSchema.plugin(increment, { modelName: 'Url', fieldName: 'short_url' });
 
 
 /*
