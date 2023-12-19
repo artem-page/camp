@@ -114,7 +114,7 @@ const isValidUrl = (url) => {
         new URL(url)
         return true
     } catch (error) {
-        res.json({ error: 'invalid url' })
+        return false
     }
 }
 
@@ -135,6 +135,8 @@ apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
 
         const { url } = req.body
 
+        if(urlPattern.test(url)) {
+
         // Check if the URL is already in the database
         let urlEntry = await Url.findOne({ original_url: url })
 
@@ -151,6 +153,10 @@ apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
             original_url: urlEntry.original_url,
             short_url: urlEntry.short_url
         })
+
+        } else {
+            res.json({ error: 'invalid url' })
+        }
 
     } catch (error) {
 
