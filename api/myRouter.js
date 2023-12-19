@@ -2,12 +2,15 @@ require('dotenv').config()
 let dns = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
-
+let bodyParser = require('body-parser')
+let uuid = require('uuid')
 //let increment = require('mongoose-increment')
 //const { customAlphabet } = require('nanoid')
 //import { customAlphabet } from 'nanoid'
 
 let apiRouter = express()
+apiRouter.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
+apiRouter.use(bodyParser.json())
 
 let cors = require('cors')
 apiRouter.use(cors({ optionsSuccessStatus: 200 })) // some legacy browsers choke on 204
@@ -67,13 +70,7 @@ const User = mongoose.model('User', userSchema)
 
 const Exercise = mongoose.model('Exercise', exerciseSchema)
 
-// bodyParser 
 
-let bodyParser = require('body-parser')
-
-apiRouter.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
-
-apiRouter.use(bodyParser.json())
 
 // timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
@@ -147,9 +144,12 @@ apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
             
             // Generate a short URL using nanoid and convert it to a number
             //const short_url = parseInt(nanoid(), 10)
+            
+            // Generate a unique identifier for short_url using uuid
+            let short_url = uuid.v4()
 
             // Create a new URL entry
-            urlEntry = new Url({ original_url: url })
+            urlEntry = new Url({ original_url: url, short_url })
 
             await urlEntry.save()
 
