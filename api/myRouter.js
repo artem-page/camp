@@ -43,6 +43,25 @@ const exerciseSchema = new mongoose.Schema({
     description: String,
     duration: Number,
     date: { type: Date, default: Date.now }
+}, {
+    versionKey: false
+})
+
+// Pre-save middleware to format the date before saving
+exerciseSchema.pre('save', function (next) {
+
+    // Check if the date field is not provided or if it's not a Date object
+    if (!this.date || !(this.date instanceof Date)) {
+      // If not, set it to the current date
+      this.date = new Date()
+    }
+
+    // You can format the date further if needed
+    // For example, if you want to store the date as a string
+    this.dateString = this.date.toDateString()
+  
+    // Continue with the save operation
+    next()
 })
 
 // Model
