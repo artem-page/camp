@@ -2,7 +2,9 @@ require('dotenv').config()
 let dns = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
-let customAlphabet = require('nanoid')
+
+//const { customAlphabet } = require('nanoid')
+import { customAlphabet } from 'nanoid'
 
 let apiRouter = express()
 
