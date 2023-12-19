@@ -97,7 +97,8 @@ linkSchema.plugin(incrementPlugin, {
 })
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, unique: true, required: true }
+    username: { type: String, unique: true, required: true },
+    log: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Exercise' }]
 })
 
 const exerciseSchema = new mongoose.Schema({
@@ -227,7 +228,7 @@ apiRouter.get('/api/collections/:collection?', async (req, res) => {
 })
 
 /*
-    Exercise Tracker
+    EXERCISE TRACKER
 */
 
 // Create a new user
