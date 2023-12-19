@@ -2,7 +2,7 @@ require('dotenv').config()
 let dns = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
-let crypto = require('crypto')
+let customAlphabet = require('nanoid')
 
 let apiRouter = express()
 
@@ -73,8 +73,6 @@ apiRouter.use(bodyParser.urlencoded({ extended: false })) // When using extended
 
 apiRouter.use(bodyParser.json())
 
-const nanoid = customAlphabet('0123456789', 8)
-
 // timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
 apiRouter.get("/api/timestamp-microservice/:date?", (req, res) => {
@@ -115,6 +113,8 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
     URL SHORTENER MICROSERVICE
 */
 
+const nanoid = customAlphabet('0123456789', 8)
+
 // Middleware to handle invalid URLs
 const validateUrl = (req, res, next) => {
 
@@ -144,10 +144,9 @@ apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
         let urlEntry = await Url.findOne({ original_url: url })
 
         if (!urlEntry) {
+            
         // Generate a short URL using nanoid and convert it to a number
-        // const short_url = parseInt(nanoid(), 10)
-        // Generate a random number using crypto
-        const short_url = crypto.randomInt(1000, 9999)
+        const short_url = parseInt(nanoid(), 10)
 
         // Create a new URL entry
         urlEntry = new Url({ original_url: url, short_url })
