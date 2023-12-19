@@ -35,7 +35,7 @@ urlSchema.plugin(AutoIncrement, { inc_field: 'short_url' })
 
 const userSchema = new mongoose.Schema({
     username: { type: String, unique: true, required: true },
-    log: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Exercise' }]
+    exercises: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Exercise' }]
 })
 
 const exerciseSchema = new mongoose.Schema({
@@ -337,7 +337,7 @@ apiRouter.get('/api/users/:_id/logs', async (req, res) => {
     } catch (error) {
 
         res.status(500).json({ error: error.message })
-        
+
     }
 })
 
