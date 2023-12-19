@@ -114,7 +114,7 @@ const isValidUrl = (url) => {
         new URL(url)
         return true
     } catch (error) {
-        return false
+        res.json({ error: 'invalid url' })
     }
 }
 
