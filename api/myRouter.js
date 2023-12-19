@@ -42,14 +42,7 @@ const exerciseSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     description: String,
     duration: Number,
-    date: {
-        type: Date,
-        default: function() {
-          const currentDate = new Date()
-          const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }
-          return currentDate.toLocaleDateString('en-US', options)
-        }
-    }
+    date: { type: Date, default: Date.now }
 })
 
 // Model
@@ -290,16 +283,15 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
 
         }
   
-        const exercise = new Exercise({ userId: user._id, username: user.username, date, duration, description })
+        const exercise = new Exercise({ userId: user._id, date, duration, description })
 
         const savedExercise = await exercise.save()
   
         // Update user's log array
-        //user.log.push(savedExercise)
-        //await user.save()
+        user.log.push(savedExercise)
+        await user.save()
   
-        //res.json({ ...savedExercise.toObject() })
-        res.json(savedExercise)
+        res.json({ ...savedExercise.toObject() })
 
     } catch (error) {
 
