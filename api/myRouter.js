@@ -42,7 +42,7 @@ const exerciseSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     description: String,
     duration: Number,
-    date: { type: String, default: Date.now }
+    date: { type: Date, default: new Date().toDateString() }
 }, {
     versionKey: false
 })
