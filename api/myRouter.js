@@ -109,17 +109,15 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 const urlPattern = /^(http|https):\/\/www\.[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/\S*)?$/
 
 const isValidUrl = (url) => {
+
     const matchPattern = urlPattern.test(url)
     
-    if (!matchPattern) {
-        callback(false)
-        return
-    }
+    if (!matchPattern) {  return false }
 
     const host = new URL(url).hostname
 
     dns.lookup(host, (err) => {
-        callback(!err);
+        if(err) {  return false }
     })
 }
 
