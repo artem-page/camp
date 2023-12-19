@@ -105,14 +105,7 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 */
 
 // Middleware to handle invalid URLs
-
-const urlPattern = /^(http|https):\/\/www\.[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/\S*)?$/
-
-const isValidUrlbyPattern = (url) => {
-  return urlPattern.test(url);
-}
-
-const isValidUrlbyModel = (url) => {
+const isValidUrl = (url) => {
   try {
     new URL(url)
     return true
@@ -124,7 +117,7 @@ const isValidUrlbyModel = (url) => {
 const validateUrl = (req, res, next) => {
   const { url } = req.body
 
-  if (!isValidUrlbyModel(url) || !isValidUrlbyPattern(url)) {
+  if (!isValidUrl(url)) {
     res.json({ error: 'invalid url' })
   } else {
     next()
