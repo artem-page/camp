@@ -283,15 +283,15 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
 
         }
   
-        const exercise = new Exercise({ userId: user._id, description, duration, date })
+        const exercise = new Exercise({ userId: user._id, username: user.username, date, duration, description })
 
         const savedExercise = await exercise.save()
   
         // Update user's log array
-        user.log.push(savedExercise)
-        await user.save()
+        //user.log.push(savedExercise)
+        //await user.save()
   
-        res.json({ ...user.toObject(), ...savedExercise.toObject() })
+        res.json({ ...savedExercise.toObject() })
 
     } catch (error) {
 
