@@ -2,7 +2,7 @@ require('dotenv').config()
 let dns = require('node:dns')
 let express = require("express")
 let mongoose = require('mongoose')
-let customAlphabet = require('nanoid')
+import { customAlphabet } from 'nanoid'
 
 let apiRouter = express()
 
@@ -144,7 +144,7 @@ apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
         let urlEntry = await Url.findOne({ original_url: url })
 
         if (!urlEntry) {
-            
+
         // Generate a short URL using nanoid and convert it to a number
         const short_url = parseInt(nanoid(), 10)
 
