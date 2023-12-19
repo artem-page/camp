@@ -5,6 +5,9 @@ let mongoose = require('mongoose')
 
 let apiRouter = express()
 
+//const { customAlphabet } = require('nanoid')
+import { customAlphabet } from 'nanoid'
+
 let cors = require('cors')
 apiRouter.use(cors({ optionsSuccessStatus: 200 })) // some legacy browsers choke on 204
 
@@ -23,8 +26,6 @@ let mongooseIncrement = require("mongoose-increment")
 let incrementPlugin = mongooseIncrement(mongoose)
 
 // Schema
-
-const { customAlphabet } = require('nanoid')
 
 const urlSchema = new mongoose.Schema({
     original_url: { type: String, required: true },
@@ -128,7 +129,7 @@ const validateUrl = (req, res, next) => {
     } catch (error) {
 
       res.json({ error: 'invalid url' })
-      
+
     }
 }
 
