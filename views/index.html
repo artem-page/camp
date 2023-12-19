@@ -23,7 +23,8 @@
         <p>
             <form action="/api/shorturl" method="POST">
                 <p>
-                    <label>URL: </label> <input type="text" name="url" /> 
+                    <label>URL: </label> 
+                    <input type="text" name="url" /> 
                     <input type="submit" value="POST URL" />
                 </p>
             </form>
@@ -32,6 +33,7 @@
         <p>
             <form action="/api/users" method="POST">
                 <p>
+                    <label>Username: </label> 
                     <input id="uname" type="text" name="username" placeholder="username" />
                     <input type="submit" value="Submit" />
                 </p>
@@ -41,6 +43,7 @@
         <p>
             <form action="/api/users/:_id/exercises" id="exercise-form" method="post">
                 <p>
+                    <label>Exercise: </label>
                     <input id="uid" type="text" name=":_id" placeholder=":_id" />
                     <input id="desc" type="text" name="description" placeholder="description*" />
                     <input id="dur" type="text" name="duration" placeholder="duration* (mins.)" />
