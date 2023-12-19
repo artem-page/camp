@@ -42,7 +42,14 @@ const exerciseSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     description: String,
     duration: Number,
-    date: { type: Date, default: Date.now }
+    date: {
+        type: Date,
+        default: function() {
+          const currentDate = new Date()
+          const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }
+          return currentDate.toLocaleDateString('en-US', options)
+        }
+    }
 })
 
 // Model
