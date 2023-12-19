@@ -4,10 +4,6 @@ let express = require("express")
 let mongoose = require('mongoose')
 let bodyParser = require('body-parser')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
-//let uuid = require('uuid')
-//let increment = require('mongoose-increment')
-//const { customAlphabet } = require('nanoid')
-//import { customAlphabet } from 'nanoid'
 
 let apiRouter = express()
 apiRouter.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
@@ -34,21 +30,8 @@ const urlSchema = new mongoose.Schema({
 })
 
 // Apply the increment plugin to generate auto-incrementing numbers
-//urlSchema.plugin(increment, { modelName: 'Url', fieldName: 'short_url' });
 urlSchema.plugin(AutoIncrement, { inc_field: 'short_url' })
 
-/*
-const linkSchema = new mongoose.Schema({
-    link: { type: String, unique: true, required: true }
-})
-
-linkSchema.plugin(incrementPlugin, {
-    modelName: 'link',
-    fieldName: 'linkId',
-    start: 1,
-    increment: 1
-})
-*/
 
 const userSchema = new mongoose.Schema({
     username: { type: String, unique: true, required: true },
@@ -73,7 +56,11 @@ const Exercise = mongoose.model('Exercise', exerciseSchema)
 
 
 
-// timestamp-microservice: Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
+/*
+    TIMESTAMP MICROSERVICE
+*/
+
+//Parameters can be suffixed with a question mark ( ? ) to make the parameter optional
 
 apiRouter.get("/api/timestamp-microservice/:date?", (req, res) => {
     
@@ -99,13 +86,17 @@ apiRouter.get("/api/timestamp-microservice/:date?", (req, res) => {
      
 })
 
-// request-header-parser
+/*
+    REQUEST HEADER PARSER
+*/
 
 apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
+
     let clientHeaders = req.headers
     let clientIP = req.socket.remoteAddress.replace(/^.*:/, "")  // removing ::ffff:
 
     res.json({ ipaddress: clientIP, language: clientHeaders["accept-language"], software: clientHeaders["user-agent"] })
+
 })
 
 
@@ -114,21 +105,23 @@ apiRouter.get('/api/request-header-parser/whoami', (req, res) => {
 */
 
 // Middleware to handle invalid URLs
+const isValidUrl = (url) => {
+  try {
+    new URL(url)
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
 const validateUrl = (req, res, next) => {
+  const { url } = req.body
 
-    const { url } = req.body
-  
-    try {
-
-      new URL(url)
-
-      next()
-
-    } catch (error) {
-
-      res.json({ error: 'invalid url' })
-
-    }
+  if (!isValidUrl(url)) {
+    res.json({ error: 'invalid url' })
+  } else {
+    next()
+  }
 }
 
 // Create a short URL
@@ -143,12 +136,6 @@ apiRouter.post('/api/shorturl', validateUrl, async (req, res) => {
 
         if (!urlEntry) {
             
-            // Generate a short URL using nanoid and convert it to a number
-            //const short_url = parseInt(nanoid(), 10)
-            
-            // Generate a unique identifier for short_url using uuid
-            //let shortUrl = uuid.v4()
-
             // Create a new URL entry
             urlEntry = new Url({ original_url: url })
 
