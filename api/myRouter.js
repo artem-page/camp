@@ -306,7 +306,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
         const response = {
             _id: user._id,
             username: user.username,
-            date: savedExercise.date.toDateString(),
+            date: savedExercise.date,
             duration: savedExercise.duration,
             description: savedExercise.description
         }
