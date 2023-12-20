@@ -234,11 +234,8 @@ apiRouter.get('/api/collections/:collection?', async (req, res) => {
 
 function formatDateString(dateString) {
 
-    if (typeof dateString !== 'string') {
-        dateString = String(dateString); // Convert to string if not already
-    }
 
-    // Knowing that dateString is the user-submitted date string, e.g., "1990-1-1" or "1990-01-01"
+    // Knowing that dateString is the user-submitted date string, e.g., "1990-1-1" or "1990-01-01" i.e. YYYY-MM-DD
     const inputDate = new Date(dateString.replace(/(\d{4}-\d{1,2}-)(\d{1,2})/, '$10$2'))
 
     const formattedDate = inputDate.toLocaleDateString('en-US', {
@@ -253,6 +250,21 @@ function formatDateString(dateString) {
 
     return dateWithoutCommas
 
+}
+
+function convertISOToYYYYMMDD(isoString) {
+
+    const date = new Date(isoString)
+    
+    // Extract year, month, and day components
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0') // Month is zero-indexed
+    const day = String(date.getDate()).padStart(2, '0')
+
+    // Form the "YYYY-MM-DD" format
+    const formattedDate = `${year}-${month}-${day}`
+
+    return formattedDate
 }
 
 // Create a new user
@@ -309,6 +321,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
             { new: true } // Return the updated user
         )
 
+        // From the form YYYY-MM-DD
         const formattedDate = formatDateString(date)
 
         const response = {
@@ -353,7 +366,7 @@ apiRouter.get('/api/users/:_id/logs', async (req, res) => {
         const log = user.exercises.map((exercise) => ({
             description: String(exercise.description), // Ensure it's a string
             duration: Number(exercise.duration), // Ensure it's a number
-            date: formatDateString(exercise.date) // Format the date here
+            date: formatDateString(convertISOToYYYYMMDD(exercise.date)) // Format the date here, from the DB in ISO 8601 format
         }))
 
         const response = {
