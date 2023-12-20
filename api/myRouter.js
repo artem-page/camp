@@ -241,7 +241,7 @@ function formatDateString(dateString) {
         weekday: 'short',
         year: 'numeric',
         month: 'short',
-        day: 'numeric'
+        day: '2-digit'
     })
 
     // Remove commas between day, month, and year
