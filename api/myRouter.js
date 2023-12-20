@@ -234,6 +234,15 @@ apiRouter.get('/api/collections/:collection?', async (req, res) => {
 
 function formatDateString(dateString) {
 
+    // Check if dateString is empty or not a string
+    if (!dateString || typeof dateString !== 'string' || dateString == '') {
+        // If empty or not a string, use the current date
+        const currentDate = new Date()
+        const currentYear = currentDate.getFullYear()
+        const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0')
+        const currentDay = String(currentDate.getDate()).padStart(2, '0')
+        dateString = `${currentYear}-${currentMonth}-${currentDay}`
+    }
 
     // Knowing that dateString is the user-submitted date string, e.g., "1990-1-1" or "1990-01-01" i.e. YYYY-MM-DD
     const inputDate = new Date(dateString.replace(/(\d{4}-\d{1,2}-)(\d{1,2})/, '$10$2'))
@@ -253,6 +262,16 @@ function formatDateString(dateString) {
 }
 
 function convertUTCToYYYYMMDD(isoString) {
+
+    // Check if isoString is empty or not a string
+    if (!isoString || typeof isoString !== 'string' || isoString == '') {
+        // If empty or not a string, use the current date
+        const currentDate = new Date()
+        const currentYear = currentDate.getUTCFullYear()
+        const currentMonth = String(currentDate.getUTCMonth() + 1).padStart(2, '0') // Month is zero-indexed
+        const currentDay = String(currentDate.getUTCDate()).padStart(2, '0')
+        return `${currentYear}-${currentMonth}-${currentDay}`
+    }
 
     const date = new Date(isoString)
     
