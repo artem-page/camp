@@ -36,3 +36,21 @@ In this GitHub project, you can discover the following things:
 
     * All links shortened in this example: https://camp.r1a1.xyz:8043/api/collections/urls
 
+4. **Implementation of a Exercise Tracker Microservice engineered with NodeJS, ExpressJS and MongoDB:**
+
+    * The Exercise Tracker project provides a RESTful API for tracking user exercises. It allows users to create accounts, add exercises, and retrieve their exercise logs.
+
+    * Users can create a new account by making a POST request to /api/users. The request should include a username in the form data. The response will contain an object with properties username and _id.
+
+    * Users can retrieve a list of all users by making a GET request to /api/users. The response will be an array of user objects, each containing username and _id properties.
+
+    * Users can add exercises by making a POST request to /api/users/:_id/exercises. The request should include the user's ID (_id), exercise description, duration, and an optional date. The response will contain details about the added exercise, including username, description, duration, date, and _id.
+
+    * Users can retrieve their full exercise log by making a GET request to /api/users/:_id/logs. The request can include optional parameters from, to, and limit to filter and limit the log entries. The response will include a user object with properties username, _id, count (number of exercises), and log (an array of exercise details). Each exercise entry in the log contains description, duration, and date properties. The date is formatted using the dateString format of the Date API.
+
+    * The project includes two functions for formatting dates: formatDateString: Formats a date string submitted by the user or uses the current date if the input is empty or invalid. convertUTCToYYYYMMDD: Converts an ISO 8601 format date string to 'YYYY-MM-DD' format, using the current date if the input is empty or invalid.
+
+    * At the time of documenting this content, the microservice demonstrated operational efficacy at the URL https://camp.r1a1.xyz:8043/api/users/65831c90042c6c50242d4f77/exercises and https://camp.r1a1.xyz:8043/api/users/65831c90042c6c50242d4f77/logs
+
+    * All exercises in this example: https://camp.r1a1.xyz:8043/api/collections/exercises
+
