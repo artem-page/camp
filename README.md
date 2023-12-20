@@ -36,7 +36,7 @@ In this GitHub project, you can discover the following things:
 
     * All links shortened in this example: https://camp.r1a1.xyz:8043/api/collections/urls
 
-4. **Implementation of a Exercise Tracker Microservice engineered with NodeJS, ExpressJS and MongoDB:**
+4. **Implementation of an Exercise Tracker Microservice engineered with NodeJS, ExpressJS and MongoDB:**
 
     * The Exercise Tracker project provides a RESTful API for tracking user exercises. It allows users to create accounts, add exercises, and retrieve their exercise logs.
 
