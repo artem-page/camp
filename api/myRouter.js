@@ -286,9 +286,15 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
             { new: true } // Return the updated user
         )
 
-        // Date formatter
-        let inputDate = savedExercise.date
-        const formattedDate = `${inputDate.getFullYear()}-${(inputDate.getMonth() + 1).toString().padStart(2, '0')}-${inputDate.getDate().toString().padStart(2, '0')}`
+        // Date formatter - assuming dateString is "1990-01-01T00:00:00.000Z"
+        const inputDate = new Date(savedExercise.date);
+
+        const formattedDate = inputDate.toLocaleDateString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        })
 
         const response = {
             _id: user._id,
