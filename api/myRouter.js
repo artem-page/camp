@@ -9,6 +9,9 @@ let apiRouter = express()
 apiRouter.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
 apiRouter.use(bodyParser.json())
 
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
 let cors = require('cors')
 apiRouter.use(cors({ optionsSuccessStatus: 200 })) // some legacy browsers choke on 204
 
@@ -404,6 +407,23 @@ apiRouter.get('/api/users/:_id/logs', async (req, res) => {
 
     }
 })
+
+/*
+    FILE METADATA MICROSERVICE
+*/
+
+app.post('/api/fileanalyse', upload.single('upfile'), (req, res) => {
+
+    // Multer adds the file information to the request object
+    const { originalname, mimetype, size } = req.file
+  
+    // Send the JSON response with file metadata
+    res.json({
+      name: originalname,
+      type: mimetype,
+      size: size
+    });
+  })
 
 // Export
 
