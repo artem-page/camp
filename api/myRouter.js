@@ -287,10 +287,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
         )
 
         // Date formatter
-        const inputDate = new Date(savedExercise.date)
-        const month = (inputDate.getMonth() + 1).toString().padStart(2, '0') // Adding 1 because months are zero-based
-        const day = inputDate.getDate().toString().padStart(2, '0')
-        const formattedDate = `${inputDate.getFullYear()}-${month}-${day}`
+        const formattedDate = `${inputDate.getFullYear()}-${(inputDate.getMonth() + 1).toString().padStart(2, '0')}-${inputDate.getDate().toString().padStart(2, '0')}`
 
         const response = {
             _id: user._id,
