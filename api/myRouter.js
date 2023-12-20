@@ -285,7 +285,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
     try {
         const { _id } = req.params
         const { description, duration } = req.body
-        const { date } = formatDateString(req.body.date)
+        const { date } = formatDateString(req.body)
         const userId = mongoose.Types.ObjectId(_id)
 
         const exercise = new Exercise({ userId, description, duration, date })
