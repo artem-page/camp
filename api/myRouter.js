@@ -412,7 +412,7 @@ apiRouter.get('/api/users/:_id/logs', async (req, res) => {
     FILE METADATA MICROSERVICE
 */
 
-app.post('/api/fileanalyse', upload.single('upfile'), (req, res) => {
+apiRouter.post('/api/fileanalyse', upload.single('upfile'), (req, res) => {
 
     // Multer adds the file information to the request object
     const { originalname, mimetype, size } = req.file
