@@ -286,7 +286,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
         const { _id } = req.params
         const { description, duration, date } = req.body
         const userId = mongoose.Types.ObjectId(_id)
-        date = formatDateString(dateString)
+        date = formatDateString(date)
 
         const exercise = new Exercise({ userId, description, duration, date })
 
@@ -298,13 +298,6 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
             { $push: { exercises: savedExercise } },
             { new: true } // Return the updated user
         )
-
-        const formattedDate = inputDate.toLocaleDateString('en-US', {
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        })
 
         const response = {
             username: user.username,
