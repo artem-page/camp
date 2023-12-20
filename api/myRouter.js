@@ -9,8 +9,10 @@ let apiRouter = express()
 apiRouter.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
 apiRouter.use(bodyParser.json())
 
+/*
 const multer = require('multer')
 const upload = multer({ dest: 'uploads/' })
+*/
 
 let cors = require('cors')
 apiRouter.use(cors({ optionsSuccessStatus: 200 })) // some legacy browsers choke on 204
@@ -175,7 +177,9 @@ apiRouter.get('/api/shorturl/:short_url', async (req, res) => {
         
         if (urlEntry) {
 
+            /*
             res.redirect(urlEntry.original_url)
+            */
 
         } else {
 
@@ -423,7 +427,7 @@ apiRouter.post('/api/fileanalyse', upload.single('upfile'), (req, res) => {
       type: mimetype,
       size: size
     });
-  })
+})
 
 // Export
 

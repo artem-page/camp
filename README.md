@@ -54,3 +54,14 @@ In this GitHub project, you can discover the following things:
 
     * All exercises in this example: https://camp.r1a1.xyz:8043/api/collections/exercises
 
+5. **Implementation of a File Metadata Microservice engineered with NodeJS and ExpressJS:**
+
+    * This API project provides a streamlined solution for analyzing file metadata. By utilizing the popular Multer npm package, the service allows users to submit a form with a file upload.
+
+    * The form's file input field, aptly named 'upfile,' facilitates the seamless submission of files. Upon successful file submission, the service returns a JSON response containing key metadata details such as the file name, type, and size in bytes. This microservice is designed to efficiently handle file uploads and deliver comprehensive file information in a structured format.
+
+    * At the time of documenting this content, the microservice demonstrated operational efficacy at the URL https://camp.r1a1.xyz:8043/api/fileanalyse
+
+NOTES
+
+Although the links for downloading files and redirecting are provided in the code, the lines enabling these features have been commented out. To activate the functionality, simply remove the comment characters /**/ from myRouter.js.
