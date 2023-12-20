@@ -62,6 +62,11 @@ In this GitHub project, you can discover the following things:
 
     * At the time of documenting this content, the microservice demonstrated operational efficacy at the URL https://camp.r1a1.xyz:8043/api/fileanalyse
 
-NOTES
+**NOTES**
 
 Although the links for downloading files and redirecting are provided in the code, the lines enabling these features have been commented out. To activate the functionality, simply remove the comment characters /**/ from myRouter.js (row 13, 14, 179).
+
+**ACHIEVEMENT**
+
+This is to certify successful completion of the Back End Development and APIs project utilizing NodeJS, ExpressJS, and MongoDB - https://freecodecamp.org/certification/R1A1/back-end-development-and-apis
+
