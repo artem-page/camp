@@ -232,6 +232,18 @@ apiRouter.get('/api/collections/:collection?', async (req, res) => {
     EXERCISE TRACKER
 */
 
+function formatDateString(dateString) {
+    // Ensure dateString is a string
+    if (typeof dateString !== 'string') {
+      throw new Error('Invalid date string');
+    }
+  
+    // Replace non-zero-padded day with zero-padded day
+    const formattedDateString = dateString.replace(/(\d{4}-\d{1,2}-)(\d{1,2})/, '$10$2');
+  
+    return formattedDateString;
+}
+
 // Create a new user
 apiRouter.post('/api/users', async (req, res) => {
 
@@ -274,6 +286,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
         const { _id } = req.params
         const { description, duration, date } = req.body
         const userId = mongoose.Types.ObjectId(_id)
+        date = formatDateString(dateString)
 
         const exercise = new Exercise({ userId, description, duration, date })
 
@@ -286,11 +299,6 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
             { new: true } // Return the updated user
         )
 
-        const dateString = date
-
-        // Knowing that dateString is the user-submitted date string, e.g., "1990-1-1" or "1990-01-01"
-        const inputDate = new Date(dateString.replace(/(\d{4}-\d{1,2}-)(\d{1,2})/, '$10$2'))
-
         const formattedDate = inputDate.toLocaleDateString('en-US', {
             weekday: 'short',
             year: 'numeric',
@@ -302,7 +310,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
             username: user.username,
             description: savedExercise.description,
             duration: savedExercise.duration,
-            date: formattedDate,
+            date: savedExercise.date,
             _id: user._id
         }
 
