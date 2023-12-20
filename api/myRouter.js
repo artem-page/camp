@@ -252,17 +252,17 @@ function formatDateString(dateString) {
 
 }
 
-function convertISOToYYYYMMDD(isoString) {
+function convertUTCToYYYYMMDD(isoString) {
 
     const date = new Date(isoString)
     
-    // Extract year, month, and day components
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0') // Month is zero-indexed
-    const day = String(date.getDate()).padStart(2, '0')
+    // Extract UTC components
+    const utcYear = date.getUTCFullYear()
+    const utcMonth = String(date.getUTCMonth() + 1).padStart(2, '0') // Month is zero-indexed
+    const utcDay = String(date.getUTCDate()).padStart(2, '0')
 
     // Form the "YYYY-MM-DD" format
-    const formattedDate = `${year}-${month}-${day}`
+    const formattedDate = `${utcYear}-${utcMonth}-${utcDay}`
 
     return formattedDate
 }
@@ -366,7 +366,7 @@ apiRouter.get('/api/users/:_id/logs', async (req, res) => {
         const log = user.exercises.map((exercise) => ({
             description: String(exercise.description), // Ensure it's a string
             duration: Number(exercise.duration), // Ensure it's a number
-            date: formatDateString(convertISOToYYYYMMDD(exercise.date)) // Format the date here, from the DB in ISO 8601 format
+            date: formatDateString(convertUTCToYYYYMMDD(exercise.date)) // Format the date here, from the DB in ISO 8601 format
         }))
 
         const response = {
