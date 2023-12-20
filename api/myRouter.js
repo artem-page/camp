@@ -234,6 +234,10 @@ apiRouter.get('/api/collections/:collection?', async (req, res) => {
 
 function formatDateString(dateString) {
 
+    if (typeof dateString !== 'string') {
+        dateString = String(dateString); // Convert to string if not already
+    }
+
     // Knowing that dateString is the user-submitted date string, e.g., "1990-1-1" or "1990-01-01"
     const inputDate = new Date(dateString.replace(/(\d{4}-\d{1,2}-)(\d{1,2})/, '$10$2'))
 
@@ -349,7 +353,7 @@ apiRouter.get('/api/users/:_id/logs', async (req, res) => {
         const log = user.exercises.map((exercise) => ({
             description: String(exercise.description), // Ensure it's a string
             duration: Number(exercise.duration), // Ensure it's a number
-            date: formatDateString(exercise.date.toDateString()) // Format the date here
+            date: formatDateString(exercise.date) // Format the date here
         }))
 
         const response = {
