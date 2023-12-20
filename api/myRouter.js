@@ -349,7 +349,7 @@ apiRouter.get('/api/users/:_id/logs', async (req, res) => {
         const log = user.exercises.map((exercise) => ({
             description: String(exercise.description), // Ensure it's a string
             duration: Number(exercise.duration), // Ensure it's a number
-            date: exercise.date.toString() // Format the date here
+            date: formatDateString(exercise.date) // Format the date here
         }))
 
         const response = {
