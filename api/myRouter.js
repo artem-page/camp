@@ -233,15 +233,19 @@ apiRouter.get('/api/collections/:collection?', async (req, res) => {
 */
 
 function formatDateString(dateString) {
-    // Ensure dateString is a string
-    if (typeof dateString !== 'string') {
-      throw new Error('Invalid date string');
-    }
-  
-    // Replace non-zero-padded day with zero-padded day
-    const formattedDateString = dateString.replace(/(\d{4}-\d{1,2}-)(\d{1,2})/, '$10$2');
-  
-    return formattedDateString;
+
+    // Knowing that dateString is the user-submitted date string, e.g., "1990-1-1" or "1990-01-01"
+    const inputDate = new Date(dateString.replace(/(\d{4}-\d{1,2}-)(\d{1,2})/, '$10$2'))
+
+    const formattedDate = inputDate.toLocaleDateString('en-US', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    })
+
+    return formattedDate
+
 }
 
 // Create a new user
@@ -284,8 +288,7 @@ apiRouter.get('/api/users', async (req, res) => {
 apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
     try {
         const { _id } = req.params
-        const { description, duration } = req.body
-        const { date } = formatDateString(req.body)
+        const { description, duration, date } = req.body
         const userId = mongoose.Types.ObjectId(_id)
 
         const exercise = new Exercise({ userId, description, duration, date })
@@ -299,11 +302,13 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
             { new: true } // Return the updated user
         )
 
+        const formattedDate = formatDateString(date)
+
         const response = {
             username: user.username,
             description: savedExercise.description,
             duration: savedExercise.duration,
-            date: savedExercise.date,
+            date: formattedDate,
             _id: user._id
         }
 
@@ -337,10 +342,12 @@ apiRouter.get('/api/users/:_id/logs', async (req, res) => {
             return res.json({ error: 'User not found' })
         }
 
+        const formattedDate = formatDateString(exercise.date.toString())
+
         const log = user.exercises.map((exercise) => ({
             description: String(exercise.description), // Ensure it's a string
             duration: Number(exercise.duration), // Ensure it's a number
-            date: exercise.date.toDateString()
+            date: formattedDate
         }))
 
         const response = {
