@@ -244,7 +244,10 @@ function formatDateString(dateString) {
         day: 'numeric'
     })
 
-    return formattedDate
+    // Remove commas between day, month, and year
+    const dateWithoutCommas = formattedDate.replace(/,\s*/g, ' ')
+
+    return dateWithoutCommas
 
 }
 
@@ -316,6 +319,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
 
     } catch (error) {
 
+        console.error(error); // Log the error message
         res.status(500).json({ error: error.message })
 
     }
@@ -359,6 +363,7 @@ apiRouter.get('/api/users/:_id/logs', async (req, res) => {
 
     } catch (error) {
 
+        console.error(error); // Log the error message
         res.status(500).json({ error: error.message })
 
     }
