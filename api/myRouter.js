@@ -42,7 +42,7 @@ const exerciseSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     description: String,
     duration: Number,
-    date: { type: Date, default: new Date().toDateString() }
+    date: { type: Date, default: Date.now }
 }, {
     versionKey: false
 })
@@ -289,7 +289,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
         const response = {
             _id: user._id,
             username: user.username,
-            date: savedExercise.date.toDateString(),
+            date: savedExercise.date.toLocaleDateString('en-US', { timeZone: 'America/Toronto' }),
             duration: savedExercise.duration,
             description: savedExercise.description
         }
