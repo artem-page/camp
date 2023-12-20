@@ -64,4 +64,4 @@ In this GitHub project, you can discover the following things:
 
 NOTES
 
-Although the links for downloading files and redirecting are provided in the code, the lines enabling these features have been commented out. To activate the functionality, simply remove the comment characters /**/ from myRouter.js.
+Although the links for downloading files and redirecting are provided in the code, the lines enabling these features have been commented out. To activate the functionality, simply remove the comment characters /**/ from myRouter.js (row 13, 14, 179).

@@ -9,10 +9,9 @@ let apiRouter = express()
 apiRouter.use(bodyParser.urlencoded({ extended: false })) // When using extended=false, values can be only strings or arrays
 apiRouter.use(bodyParser.json())
 
-/*
 const multer = require('multer')
-const upload = multer({ dest: 'uploads/' })
-*/
+const upload = multer()
+//const upload = multer({ dest: 'uploads/' })
 
 let cors = require('cors')
 apiRouter.use(cors({ optionsSuccessStatus: 200 })) // some legacy browsers choke on 204
