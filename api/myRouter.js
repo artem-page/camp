@@ -286,7 +286,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
             { new: true } // Return the updated user
         )
 
-        const dateString = savedExercise.date
+        const dateString = date
 
         // Knowing that dateString is the user-submitted date string, e.g., "1990-1-1" or "1990-01-01"
         const inputDate = new Date(dateString.replace(/(\d{4}-\d{1,2}-)(\d{1,2})/, '$10$2'))
