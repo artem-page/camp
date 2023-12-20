@@ -287,6 +287,7 @@ apiRouter.post('/api/users/:_id/exercises', async (req, res) => {
         )
 
         // Date formatter
+        let inputDate = savedExercise.date
         const formattedDate = `${inputDate.getFullYear()}-${(inputDate.getMonth() + 1).toString().padStart(2, '0')}-${inputDate.getDate().toString().padStart(2, '0')}`
 
         const response = {
