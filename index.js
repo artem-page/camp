@@ -22,8 +22,10 @@ app.get('/', function(req, res) {
 
 // Test - React - Development files
 
+app.use('/dev/dist/randomquotemachine/', express.static(path.join(process.cwd(), 'dev', 'dist', 'randomquotemachine')))
+
 app.get('/randomquotemachine', function(req, res) {
-  res.sendFile(process.cwd() + "/dev/dist/randomquotemachine/randomquotemachine.html")
+  res.sendFile(path.join(process.cwd(), 'dev', 'dist', 'randomquotemachine', 'randomquotemachine.html'));
 })
 
 // Middleware
