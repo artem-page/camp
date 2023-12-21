@@ -8,7 +8,7 @@ module.exports = {
     randomquotemachine: './dev/src/RandomQuoteMachine.js' 
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: '[name]/[name].bundle.js',
     path: path.resolve(__dirname, 'dev/dist/'),
   },
 	optimization: {
@@ -24,12 +24,12 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 		  title: 'RandomQuoteMachine',
-		  filename: 'randomquotemachine.html',
+		  filename: '[name]/randomquotemachine.html',
 		  template: 'dev/public/randomquotemachine.html'
 		}),
     new MiniCssExtractPlugin({
       linkType: "text/css",
-      filename: 'randomquotemachine.css',
+      filename: '[name]/randomquotemachine.css',
     }),
 	],
   devServer: {

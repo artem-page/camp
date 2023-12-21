@@ -20,6 +20,12 @@ app.get('/', function(req, res) {
   res.sendFile(process.cwd() + "/views/index.html")
 })
 
+// Test - React - Development files
+
+app.get('/randomquotemachine', function(req, res) {
+  res.sendFile(process.cwd() + "/dev/dist/randomquotemachine/randomquotemachine.html")
+})
+
 // Middleware
 
 app.use(myRouter)
