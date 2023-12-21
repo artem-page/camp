@@ -8,7 +8,7 @@ module.exports = {
     randomquotemachine: './dev/src/RandomQuoteMachine.js' 
   },
   output: {
-    filename: '[name]/[name].bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dev/dist/'),
   },
 	optimization: {
