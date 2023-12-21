@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom/client';
 
-const App = () => {
+import './RandomQuoteMachine.css';
+
+const RandomQuoteMachine = () => {
 
     const [quoteIndex, setQuoteIndex] = useState(0);
     const [fadeOut, setFadeOut] = useState(false);
@@ -50,7 +53,7 @@ const App = () => {
   
     return (
       <div id="quote-box" >
-        <div className={`quote-container ${fadeOut ? 'fade-out' : ''}`}>
+        <div className={`quoteContainer ${fadeOut ? 'fadeOut' : ''}`}>
             <div id="text">{wisdomQuotes[quoteIndex].quote}</div>
             <div id="author">- {wisdomQuotes[quoteIndex].author}</div>
         </div>
@@ -67,4 +70,8 @@ const App = () => {
 
 };
 
-export default App;
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+	<RandomQuoteMachine />
+);
