@@ -12,9 +12,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dev/dist/'),
   },
 	optimization: {
-		splitChunks: {
-			chunks: 'all'
-		}
+		splitChunks: false
 	},
 	performance: {
 		hints: false,
