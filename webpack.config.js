@@ -3,14 +3,14 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  mode: 'development',
-  entry: { 
-    randomquotemachine: './dev/src/RandomQuoteMachine.js' 
-  },
-  output: {
-    filename: '[name]/[name].bundle.js',
-    path: path.resolve(__dirname, 'dev/dist/'),
-  },
+	mode: 'development',
+	entry: { 
+		randomquotemachine: './dev/src/RandomQuoteMachine.js' 
+	},
+	output: {
+		filename: '[name]/[name].bundle.js',
+		path: path.resolve(__dirname, 'dev/dist/'),
+	},
 	optimization: {
 		splitChunks: false
 	},
@@ -21,24 +21,24 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-		  title: 'RandomQuoteMachine',
-		  filename: '[name]/randomquotemachine.html',
-		  template: 'dev/public/randomquotemachine.html'
+			title: 'RandomQuoteMachine',
+			filename: '[name]/randomquotemachine.html',
+			template: 'dev/public/randomquotemachine.html'
 		}),
-    new MiniCssExtractPlugin({
-      linkType: "text/css",
-      filename: '[name]/randomquotemachine.css',
-    }),
+	new MiniCssExtractPlugin({
+		linkType: "text/css",
+		filename: '[name]/randomquotemachine.css',
+	}),
 	],
-  devServer: {
-    static: [
-      { directory: path.resolve(__dirname, 'dev/public') },
-      { directory: path.resolve(__dirname, 'dev/dist'), watch: true } 
-    ], // Folders to serve HTML files from
-    port: 3000,
-    open: true,
-  },
-  module: {
+	devServer: {
+		static: [
+			{ directory: path.resolve(__dirname, 'dev/public') },
+			{ directory: path.resolve(__dirname, 'dev/dist'), watch: true } 
+		], // Folders to serve HTML files from
+		port: 3000,
+		open: true,
+	},
+	module: {
 		rules: [
 			{
 				test: /\.js$/,
@@ -53,17 +53,17 @@ module.exports = {
 					}
 				}
 			},
-      {
-        test: /\.scss$/,
-        use: [
+		{
+		test: /\.scss$/,
+		use: [
 					{
 						loader: 'sass-loader'
 					},
 					{
 						loader: 'css-loader'
 					}
-        ],
-      },
+		],
+		},
 			{
 				test: /\.css$/,
 				use: [MiniCssExtractPlugin.loader, "css-loader"]
@@ -77,5 +77,5 @@ module.exports = {
 				]
 			}		
 		]
-  }
+	}
 }
